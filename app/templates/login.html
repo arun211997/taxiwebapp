@@ -107,6 +107,18 @@
         style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
   </nav>
   <div class="container">
+    <center>
+      <div id="mydiv">
+        {% for message in messages %}
+        <h5>
+          <div class="alert mt-5"
+            style="width:max-content; border-radius: 20px; background-color: aliceblue;color: rgb(222, 50, 84);font-size: 1rem;">
+            {{message}}
+          </div>
+        </h5>
+        {% endfor %}
+      </div>
+    </center>
     <h1 style="font-size: large; font-weight: bold;">LOG IN</h1>
     <div class="row" style="justify-content: center;">
       <div class="col-md-4" style="background-color: #0056b3;border-radius: 10px;">
@@ -145,5 +157,13 @@
         </div><br>
     </footer>
 </body>
+<script>
+  $(document).ready(function () {
+    // Use setTimeout to delay the execution of the fadeOut function
+    setTimeout(function () {
+      $('#mydiv').fadeOut('fast');
+    }, 1200); // <-- time in milliseconds
+  });
+</script>
 
 </html>

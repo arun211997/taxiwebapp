@@ -107,10 +107,23 @@
         style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
   </nav>
   <div class="container">
+    <center>
+      <div id="mydiv">
+        {% for message in messages %}
+        <h5>
+          <div class="alert mt-5"
+            style="width:max-content; border-radius: 20px; background-color: aliceblue;color: rgb(222, 50, 84);font-size: 1rem;">
+            {{message}}
+          </div>
+        </h5>
+        {% endfor %}
+      </div>
+    </center>
     <h1 style="font-size: large; font-weight: bold;">SIGN UP</h1>
     <div class="row" style="justify-content: center;">
       <div class="col-md-4" style="background-color: #0056b3;border-radius: 10px;">
-        <form action="{% url 'signupfunct' %}" method="post" style="margin-top: 20px;margin-bottom: 20px;">
+        <form action="{% url 'signupfunct' %}" onsubmit="return validatepass()" method="post"
+          style="margin-top: 20px;margin-bottom: 20px;">
           {% csrf_token %}
           <div class="form-group">
             <!-- <label for="name">Name:</label> -->
@@ -134,14 +147,18 @@
           </div>
           <div class="form-group">
             <!-- <label for="email">Email:</label> -->
-            <input class="form-control" type="password" id="cpassword" name="cpassword" required placeholder="confirm password">
+            <input class="form-control" type="password" id="cpassword" name="cpassword" required
+              placeholder="confirm password">
+            <span style="color: rgb(247, 201, 201);" id="confirmError" class="error"></span>
           </div>
-          <button type="submit" style=" border: none;border-radius: 10px;font-size: medium;font-weight: bold;color: #0056b3;">Sign Up</button>
+          <button type="submit"
+            style=" border: none;border-radius: 10px;font-size: medium;font-weight: bold;color: #0056b3;">Sign
+            Up</button>
         </form>
       </div>
     </div>
   </div>
-  
+
   <footer class="footer" style="margin-top: 200px;background-color: #171616;color: #f2f4f6;">
     <div class="container" style="justify-content: center;align-items: center;display: flex;margin-top: 20px;">
       <div class="row" style="width: 100%;margin-top: 20px;justify-content: center;">
@@ -155,5 +172,28 @@
       </div><br>
   </footer>
 </body>
+<script>
+  $(document).ready(function () {
+    // Use setTimeout to delay the execution of the fadeOut function
+    setTimeout(function () {
+      $('#mydiv').fadeOut('fast');
+    }, 1200); // <-- time in milliseconds
+  });
+</script>
+<script>
+  function validatepass() {
+    var newp = document.getElementById('password').value;
+    var confirm = document.getElementById('cpassword').value;
+
+    document.getElementById('confirmError').innerHTML = '';
+
+    if (newp != confirm) {
+      document.getElementById('confirmError').innerHTML = 'Passwords do not match';
+      return false;
+    }
+
+    return true;
+  }
+</script>
 
 </html>
