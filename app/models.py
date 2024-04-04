@@ -8,7 +8,7 @@ class userdata(models.Model):
     phone=models.TextField(max_length=255)
 
 class trip(models.Model):
-    tripnumber=models.TextField(default='TRIP000')
+    tripnumber=models.TextField(default="TRIP000")
 
 class tripdata(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
@@ -31,3 +31,5 @@ class tripdata(models.Model):
     balance=models.TextField(default=0)
     tripcharge=models.TextField(null=True)
     guidecharge=models.TextField(null=True)
+    huncharge=models.TextField(null=True)
+    extra=models.TextField(null=True)

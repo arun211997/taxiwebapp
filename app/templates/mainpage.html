@@ -44,6 +44,13 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
+    .footer {
+      background-color: #333;
+      color: #fff;
+      padding: 50px 0;
+      margin-top: 100px;
+    }
+
     .form-group {
       margin-bottom: 20px;
       text-align: left;
@@ -105,6 +112,10 @@
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0056b3;">
     <a class="navbar-brand" href="#" style="font-weight: bold;color: rgb(255, 255, 255);margin-left: 30PX;"><img
         style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center;align-items: center;">
       <div style="width: 50%;align-items: baseline;;">
         <ul class="navbar-nav ml-auto" style="justify-content: space-around;align-items: baseline;">
@@ -134,8 +145,8 @@
             {% csrf_token %}
             <div class="form-group">
               <!-- <label for="name">Name:</label> -->
-              <input class="form-control" type="text" id="trip_number" name="trip_number" value="{{trip.tripnumber}}"
-                required readonly>
+              <input class="form-control" type="text" id="trip_number" name="trip_number" value="TRIPOO1" required
+                readonly>
               <span id="nameError" class="error" style="color: #ffdbdb;"></span>
             </div>
             <div class="form-group">
@@ -242,17 +253,31 @@
                   <input class="form-control" type="number" id="guide" name="guide" placeholder="Toll Charge">
                   <span id="guideError" class="error" style="color: #ffdbdb;"></span>
                 </div>
-              </div>
-              <div class="col-md-6">
                 <div class="form-group">
                   <!-- <label for="toll_charge">Toll Charge:</label> -->
                   <span style="color: #fff;font-weight: bold;font-size: medium;">Trip KM</span>
                   <input class="form-control" type="number" id="tripkm" name="tripkm" placeholder="Trip Km" readonly>
                   <span id="tripkmError" class="error" style="color: #ffdbdb;"></span>
                 </div>
+              </div>
+
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <!-- <label for="toll_charge">Toll Charge:</label> -->
+                  <span style="color: #fff;font-weight: bold;font-size: medium;">Trip charge upto 100 km </span>
+                  <input class="form-control" type="number" id="hun" name="hun" placeholder="charge" required>
+                  <!-- <span id="tripkmError" class="error" style="color: #ffdbdb;"></span> -->
+                </div>
+                <div class="form-group">
+                  <!-- <label for="toll_charge">Toll Charge:</label> -->
+                  <span style="color: #fff;font-weight: bold;font-size: medium;">extracharge after 100km</span>
+                  <input class="form-control" type="number" id="after" name="after" placeholder="extra charge" required>
+                  <!-- <span id="tripkmError" class="error" style="color: #ffdbdb;"></span> -->
+                </div>
                 <div class="form-group">
                   <!-- <label for="advance">Advance:</label> -->
-                  <span style="color: #fff;font-weight: bold;font-size: medium;">trip charge</span>
+                  <span style="color: #fff;font-weight: bold;font-size: medium;">Total Trip charge</span>
                   <input class="form-control" type="number" id="kilo" name="kilo" placeholder="Advance"
                     value="{{trip.advance}}" readonly>
                   <span id="advanceError" class="error" style="color: #ffdbdb;"></span>
@@ -279,12 +304,13 @@
               style=" border: none;border-radius: 10px;font-size: medium;font-weight: bold;color: #0056b3;">Book
               Now</button>
           </form>
+
       </div>
     </div>
   </div>
-  <footer class="footer" style="margin-top: 400px;background-color: #171616;color: #f2f4f6;">
-    <div class="container" style="justify-content: center;align-items: center;display: flex;margin-top: 20px;">
-      <div class="row" style="width: 100%;margin-top: 20px;justify-content: center;">
+  <footer class="footer">
+    <div class="container" style="justify-content: center;align-items: center;display: flex;">
+      <div class="row" style="width: 100%;">
         <div class="col-md-3">
           <h3 style="font-size: large;">Customer Services</h3>
           <span style="font-size: medium;opacity: 0.7;">FAQ</span><br>
@@ -292,9 +318,29 @@
           <span style="font-size: medium;opacity: 0.7;">Terms & Conditions</span><br>
           <p style="font-size: medium;opacity: 0.7;">Privacy Policy</p>
         </div>
-      </div><br>
+        <div class="col-md-3">
+          <h3 style="font-size: large;">Community</h3>
+          <span style="font-size: medium;opacity: 0.7;">Blog</span><br>
+          <span style="font-size: medium;opacity: 0.7;">Community</span><br>
+          <span style="font-size: medium;opacity: 0.7;">Ideas</span><br>
+          <p style="font-size: medium;opacity: 0.7;">Developers</p>
+        </div>
+        <div class="col-md-3">
+          <h3 style="font-size: large;">About</h3>
+          <span style="font-size: medium;opacity: 0.7;">Contact</span><br>
+          <span style="font-size: medium;opacity: 0.7;">Team</span><br>
+          <span style="font-size: medium;opacity: 0.7;">Careers</span><br>
+          <p style="font-size: medium;opacity: 0.7;">Services</p>
+        </div>
+        <div class="col-md-3">
+          <h3 style="font-size: large;">Follow Us</h3>
+          <img src="{% static 'fb.png' %}" alt="" width="45px">
+          <img src="{% static 'y1.jpg' %}" alt="" width="45px">
+          <img src="{% static 'i1.png' %}" alt="" width="45px"><br>
+        </div>
+      </div>
+    </div>
   </footer>
-
   <script>
     function validateForm() {
       var parking_charge = parseInt(document.getElementById("parking_charge").value);
@@ -342,73 +388,6 @@
       }
       return true;
     }
-    // function calculateTotal() {
-    //   var parkingCharge = parseInt(document.getElementById("parking_charge").value) || 0; // Default to 0 if input is empty
-    //   var tollCharge = parseInt(document.getElementById("toll_charge").value) || 0;
-    //   var start = parseInt(document.getElementById("starting_km").value) || 0; // Default to 0 if input is empty
-    //   var end = parseInt(document.getElementById("ending_km").value) || 0
-    //   var adv = parseInt(document.getElementById("advance").value) || 0
-    //   var total = parkingCharge + tollCharge
-    //   document.getElementById("tripkm").value = 0;
-    //   document.getElementById("total").value = total;
-    //   document.getElementById("tripkm").value = kmdif;
-    //   document.getElementById("balance").value = total - advance;
-    // }
-
-
-    // document.getElementById("parking_charge").addEventListener("input", function () {
-    //   calculateTotal();
-    // });
-
-    // // Event listener for toll charge field
-    // document.getElementById("toll_charge").addEventListener("input", function () {
-    //   calculateTotal();
-    // });
-
-
-    // // Event listener for toll charge field
-    // document.getElementById("starting_km").addEventListener("input", function () {
-    //   calculateTotal();
-    // });
-
-    // document.getElementById("advance").addEventListener("input", function () {
-    //   calculateTotal();
-    // });
-
-    // var existing_total = parseFloat(document.getElementById('total').value) || 0;
-    // function calculateTotal() {
-    //   var adv = parseInt(document.getElementById('advance').value);
-    //   var starting_km = parseInt(document.getElementById('starting_km').value);
-    //   var ending_km = parseInt(document.getElementById('ending_km').value);
-    //   var trip_km = isNaN(starting_km) || isNaN(ending_km) ? 0 : ending_km - starting_km;
-    //   document.getElementById('tripkm').value = trip_km;
-
-    //   var rate = 10; // Default rate
-    //   if (trip_km > 100) {
-    //     var a = trip_km - 100;
-    //     trip_charge = (a * 15) + 1000;
-    //     var total = trip_charge;
-    //   }
-    //   else {
-    //     var trip_charge = trip_km * rate;
-    //     var total = trip_charge;
-    //   }
-    //   document.getElementById('kilo').value = trip_charge;
-    //   var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
-    //   var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
-    //   var guide_charge = parseFloat(document.getElementById('guide').value) || 0;
-    //   total += parking_charge + toll_charge + guide_charge;
-    //   document.getElementById('total').value = total;
-    //   document.getElementById('balance').value = total - adv;
-    // }
-
-    // document.getElementById('parking_charge').addEventListener('input', calculateTotal);
-    // document.getElementById('toll_charge').addEventListener('input', calculateTotal);
-    // document.getElementById('guide').addEventListener('input', calculateTotal);
-    // document.getElementById('ending_km').addEventListener('input', calculateTotal);
-
-    // // Call calculateTotal on page load to calculate total from existing data
-    // window.onload = calculateTotal;
     function calculateTotal() {
       var adv = parseInt(document.getElementById('advance').value) || 0;
       var starting_km = parseInt(document.getElementById('starting_km').value);
@@ -447,6 +426,8 @@
 
     // Call calculateTotal on page load to calculate total from existing data
     window.onload = calculateTotal;
+
+    
 
   </script>
 </body>

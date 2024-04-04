@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="demo.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap CSS -->
     <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- jsPDF -->
@@ -22,6 +23,10 @@
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0056b3;">
         <a class="navbar-brand" href="#" style="font-weight: bold;color: rgb(255, 255, 255);margin-left: 30PX;"><img
                 style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center;align-items: center;">
             <div style="width: 50%;align-items: baseline;;">
                 <ul class="navbar-nav ml-auto" style="justify-content: space-around;align-items: baseline;">
@@ -30,9 +35,8 @@
                         Trip</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{%url 'mainpage'%}"
-                            style="color: rgb(237, 242, 246); font-weight: bold; font-size:medium; outline: none; border: none; background-color: none;margin-left: 5px;"
-                            >Trips</a>
+                        <a class="nav-link" href="{%url 'tripage'%}"
+                            style="color: rgb(237, 242, 246); font-weight: bold; font-size:medium; outline: none; border: none; background-color: none;margin-left: 5px;">Trips</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'logout'%}"
@@ -101,19 +105,20 @@
             </div>
             <div class="col-md-2"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: center; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 95px;">
-                <span>Time of Arrival</span>
-                <span style="font-weight: 400;">Vehicle No :</span>
+                <span>Vehicle Number</span>
+                <span style="font-weight: 400;">{{trip.vehiclenumber}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 95px;">
                 <span>Trip Charge</span>
-                <span style="font-weight: 400;">(₹100 upto 100km and extra charge of ₹5 for every 1 km)</span>
+                <span style="font-weight: 400;">(₹{{trip.huncharge}}/km upto 100km and extra charge of ₹{{trip.extra}}/km after 100km)</span>
+                <span>Total KM : <span style="font-weight: 400;">{{trip.tripkm}}</span></span>
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: 400;">{{trip.tripcharge}}</span>
+                <span style="font-weight: 400;">₹{{trip.tripcharge}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
@@ -123,7 +128,7 @@
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: 400;">{{trip.parking}}</span>
+                <span style="font-weight: 400;">₹{{trip.parking}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
@@ -133,7 +138,7 @@
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: 400;">{{trip.toll}}</span>
+                <span style="font-weight: 400;">₹{{trip.toll}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
@@ -143,19 +148,9 @@
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: 400;">{{trip.guidecharge}}</span>
+                <span style="font-weight: 400;">₹{{trip.guidecharge}}</span>
             </div>
         </div>
-        <!-- <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
-                <span>Other Charges</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: 400;">155</span>
-            </div>
-        </div> -->
         <div class="row" style="justify-content: center;">
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
@@ -163,7 +158,7 @@
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;">
-                <span style="font-weight: 400;">{{trip.advance}}</span>
+                <span style="font-weight: 400;">₹{{trip.advance}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
@@ -173,7 +168,7 @@
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: bold;">{{trip.total}}</span>
+                <span style="font-weight: bold;">₹{{trip.total}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
@@ -183,26 +178,15 @@
             </div>
             <div class="col-md-6"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
-                <span style="font-weight: bold;">{{trip.balance}}</span>
+                <span style="font-weight: bold;">₹{{trip.balance}}</span>
             </div>
         </div>
     </div>
     <center>
-        <button style="background-color: #0056b3; margin-top: 10px;" class="btn btn-primary" id="download"> Download pdf</button>
+        <button style="background-color: #0056b3; margin-top: 10px;" class="btn btn-primary" id="download"> Download
+            pdf</button>
     </center>
-    <footer class="footer" style="margin-top: 400px;background-color: #171616;color: #f2f4f6;">
-        <div class="container" style="justify-content: center;align-items: center;display: flex;margin-top: 20px;">
-            <div class="row" style="width: 100%;margin-top: 20px;justify-content: center;">
-                <div class="col-md-3">
-                    <h3 style="font-size: large;">Customer Services</h3>
-                    <span style="font-size: medium;opacity: 0.7;">FAQ</span><br>
-                    <span style="font-size: medium;opacity: 0.7;">Return & Refunds</span><br>
-                    <span style="font-size: medium;opacity: 0.7;">Terms & Conditions</span><br>
-                    <p style="font-size: medium;opacity: 0.7;">Privacy Policy</p>
-                </div>
-            </div><br>
-        </div>
-    </footer>
+
     <script>
         window.onload = function () {
             document.getElementById("download")

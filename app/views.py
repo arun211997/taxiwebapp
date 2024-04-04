@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Create your views here.
 def mainpage(request):
-    tripn=trip.objects.get(id=1)
+    tripn=trip.objects.all()
     return render (request, "mainpage.html",{'trip':tripn})
 
 def signup(request):
@@ -51,13 +51,11 @@ def log(request):
             # it means that there is a valid user, and the code block within the if block will be executed.
             auth.login(request,user)
             request.session['uid']=user.id
-            tripn=trip.objects.get(id=1)
-            return render( request ,"mainpage.html",{'trip':tripn})
+            return redirect("mainpage")
+           
         else:
             messages.info(request, "Invalid password or Password")
             return redirect("login")
-    else:
-        return redirect("login")
     
 def logout(request):
     auth.logout(request)
@@ -98,12 +96,14 @@ def startrip(request):
         guidecharge = request.POST.get("guide")
         if guidecharge == "":
             parking=0
+        hun=request.POST.get("hun")
+        after=request.POST.get("after")
        
         userid= request.session['uid']
     
         data=tripdata(tripnumber=tn,drivername=dn,guestname=gn,startkm=sk,start=sp,fromdate=fd,todate=ed,
                       endkm=ek,end=ep,vehiclename=vname,vehiclenumber=vnumber,tripcharge=tripcharge,guidecharge=guidecharge,
-                      parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,
+                      parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
                       user_id=userid,)
         data.save()
         tripn=trip.objects.get(id=1)
@@ -138,4 +138,4 @@ def apply(request,id):
         tripd.tripcharge=request.POST["kilo"]
         tripd.guidecharge=request.POST["guide"]
         tripd.save()
-
+        return render(request,'bill.html',{'trip':tripd})

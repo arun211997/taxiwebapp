@@ -12,7 +12,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="demo.css">
     <style>
-        /* Media Queries for Responsiveness */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 50px 0;
+            margin-top: 400px;
+        }
     </style>
 </head>
 
@@ -20,6 +25,10 @@
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0056b3;">
         <a class="navbar-brand" href="#" style="font-weight: bold;color: rgb(255, 255, 255);margin-left: 30PX;"><img
                 style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center;align-items: center;">
             <div style="width: 50%;align-items: baseline;;">
                 <ul class="navbar-nav ml-auto" style="justify-content: space-around;align-items: baseline;">
@@ -28,9 +37,8 @@
                         Trip</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"
-                            style="color: rgb(237, 242, 246); font-weight: bold; font-size:medium; outline: none; border: none; background-color: none;margin-left: 5px;"
-                            id="log" type="button" data-toggle="modal" data-target="#signinmodal">Trips</a>
+                        <a class="nav-link" href="{%url 'tripage'%}"
+                            style="color: rgb(237, 242, 246); font-weight: bold; font-size:medium; outline: none; border: none; background-color: none;margin-left: 5px;">Trips</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'logout'%}"
@@ -58,13 +66,13 @@
                         <td>{{p.tripnumber}}</td>
                         <td>{{p.fromdate}}</td>
                         <td>
-                            <button class="btn"
-                                style="font-size: medium; background-color:rgb(255, 255, 255);"><a href="{%url 'bill' p.id%}"
+                            <button class="btn" style="font-size: medium; background-color:rgb(255, 255, 255);"><a
+                                    href="{%url 'bill' p.id%}"
                                     style="color: rgb(1, 9, 17);text-decoration: none;">View</a></button>
                         </td>
                         <td>
-                            <button class="btn"
-                                style="font-size: medium; background-color:rgb(255, 255, 255);"><a href="{%url 'edit' p.id%}"
+                            <button class="btn" style="font-size: medium; background-color:rgb(255, 255, 255);"><a
+                                    href="{%url 'edit' p.id%}"
                                     style="color: rgb(1, 9, 17);text-decoration: none;">Edit</a></button>
                         </td>
                     </tr>
@@ -75,9 +83,9 @@
         </div>
     </div>
 
-    <footer class="footer" style="margin-top: 600px;background-color: #171616;color: #f2f4f6;">
-        <div class="container" style="justify-content: center;align-items: center;display: flex;margin-top: 20px;">
-            <div class="row" style="width: 100%;margin-top: 20px;justify-content: center;">
+    <footer class="footer">
+        <div class="container" style="justify-content: center;align-items: center;display: flex;">
+            <div class="row" style="width: 100%;">
                 <div class="col-md-3">
                     <h3 style="font-size: large;">Customer Services</h3>
                     <span style="font-size: medium;opacity: 0.7;">FAQ</span><br>
@@ -85,7 +93,28 @@
                     <span style="font-size: medium;opacity: 0.7;">Terms & Conditions</span><br>
                     <p style="font-size: medium;opacity: 0.7;">Privacy Policy</p>
                 </div>
-            </div><br>
+                <div class="col-md-3">
+                    <h3 style="font-size: large;">Community</h3>
+                    <span style="font-size: medium;opacity: 0.7;">Blog</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Community</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Ideas</span><br>
+                    <p style="font-size: medium;opacity: 0.7;">Developers</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="font-size: large;">About</h3>
+                    <span style="font-size: medium;opacity: 0.7;">Contact</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Team</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Careers</span><br>
+                    <p style="font-size: medium;opacity: 0.7;">Services</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="font-size: large;">Follow Us</h3>
+                    <img src="{% static 'fb.png' %}" alt="" width="45px">
+                    <img src="{% static 'y1.jpg' %}" alt="" width="45px">
+                    <img src="{% static 'i1.png' %}" alt="" width="45px"><br>
+                </div>
+            </div>
+        </div>
     </footer>
 </body>
 

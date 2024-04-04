@@ -25,6 +25,13 @@
             background-color: #f4f4f4;
         }
 
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 50px 0;
+            margin-top: 100px;
+        }
+
         .container {
             width: 80%;
             margin: 0 auto;
@@ -105,12 +112,16 @@
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0056b3;">
         <a class="navbar-brand" href="#" style="font-weight: bold;color: rgb(255, 255, 255);margin-left: 30PX;"><img
                 style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center;align-items: center;">
             <div style="width: 50%;align-items: baseline;;">
                 <ul class="navbar-nav ml-auto" style="justify-content: space-around;align-items: baseline;">
-                    <a class="nav-link"
-                        style="color: rgb(229, 232, 234); font-weight: bold; font-size: 1rem; outline: none; border: none; background-color: none;margin-left: 5px;"
-                        id="log" type="button" data-toggle="modal" data-target="#signinmodal">New Trip</a>
+                    <a class="nav-link" href="{%url 'mainpage'%}"
+                        style="color: rgb(229, 232, 234); font-weight: bold; font-size: 1rem; outline: none; border: none; background-color: none;margin-left: 5px;">New
+                        Trip</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'tripage'%}"
@@ -257,18 +268,30 @@
                                         placeholder="Toll Charge">
                                     <span id="tollError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
+                                <div class="form-group">
+                                    <!-- <label for="toll_charge">Toll Charge:</label> -->
+                                    <span style="color: #fff;font-weight: bold;font-size: medium;">Trip KM</span>
+                                    <input class="form-control" type="number" id="tripkm" name="tripkm" placeholder="Trip Km" readonly>
+                                    <span id="tripkmError" class="error" style="color: #ffdbdb;"></span>
+                                  </div>
+
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <!-- <label for="toll_charge">Toll Charge:</label> -->
-                                    <span style="color: #fff;font-weight: bold;font-size: medium;">Trip KM</span>
-                                    <input class="form-control" type="number" id="tripkm" name="tripkm"
-                                        placeholder="Trip Km" readonly>
-                                    <span id="tripkmError" class="error" style="color: #ffdbdb;"></span>
-                                </div>
+                                    <span style="color: #fff;font-weight: bold;font-size: medium;">Trip charge upto 100 km </span>
+                                    <input class="form-control" type="number" id="hun" name="hun" placeholder="charge" value="{{trip.huncharge}}" readonly >
+                                    <!-- <span id="tripkmError" class="error" style="color: #ffdbdb;"></span> -->
+                                  </div>
+                                  <div class="form-group">
+                                    <!-- <label for="toll_charge">Toll Charge:</label> -->
+                                    <span style="color: #fff;font-weight: bold;font-size: medium;">extracharge after 100km</span>
+                                    <input class="form-control" type="number" id="after" name="after" placeholder="charge" value="{{trip.extra}}" readonly>
+                                    <!-- <span id="tripkmError" class="error" style="color: #ffdbdb;"></span> -->
+                                  </div>
                                 <div class="form-group">
                                     <!-- <label for="advance">Advance:</label> -->
-                                    <span style="color: #fff;font-weight: bold;font-size: medium;">km charge</span>
+                                    <span style="color: #fff;font-weight: bold;font-size: medium;">Total Trip charge</span>
                                     <input class="form-control" type="number" id="kilo" name="kilo"
                                         placeholder="Advance" value="{{trip.advance}}" readonly>
                                     <span id="advanceError" class="error" style="color: #ffdbdb;"></span>
@@ -301,9 +324,9 @@
             </div>
         </div>
     </div>
-    <footer class="footer" style="margin-top: 400px;background-color: #171616;color: #f2f4f6;">
-        <div class="container" style="justify-content: center;align-items: center;display: flex;margin-top: 20px;">
-            <div class="row" style="width: 100%;margin-top: 20px;justify-content: center;">
+    <footer class="footer">
+        <div class="container" style="justify-content: center;align-items: center;display: flex;">
+            <div class="row" style="width: 100%;">
                 <div class="col-md-3">
                     <h3 style="font-size: large;">Customer Services</h3>
                     <span style="font-size: medium;opacity: 0.7;">FAQ</span><br>
@@ -311,7 +334,28 @@
                     <span style="font-size: medium;opacity: 0.7;">Terms & Conditions</span><br>
                     <p style="font-size: medium;opacity: 0.7;">Privacy Policy</p>
                 </div>
-            </div><br>
+                <div class="col-md-3">
+                    <h3 style="font-size: large;">Community</h3>
+                    <span style="font-size: medium;opacity: 0.7;">Blog</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Community</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Ideas</span><br>
+                    <p style="font-size: medium;opacity: 0.7;">Developers</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="font-size: large;">About</h3>
+                    <span style="font-size: medium;opacity: 0.7;">Contact</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Team</span><br>
+                    <span style="font-size: medium;opacity: 0.7;">Careers</span><br>
+                    <p style="font-size: medium;opacity: 0.7;">Services</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="font-size: large;">Follow Us</h3>
+                    <img src="{% static 'fb.png' %}" alt="" width="45px">
+                    <img src="{% static 'y1.jpg' %}" alt="" width="45px">
+                    <img src="{% static 'i1.png' %}" alt="" width="45px"><br>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -322,16 +366,17 @@
             var ending_km = parseInt(document.getElementById('ending_km').value);
             var trip_km = isNaN(starting_km) || isNaN(ending_km) ? 0 : ending_km - starting_km;
             document.getElementById('tripkm').value = trip_km;
-            
+            var hun = parseInt(document.getElementById('hun').value);
+            var after = parseInt(document.getElementById('after').value);
             var rate = 10; // Default rate
             if (trip_km > 100) {
-              var  a= trip_km - 100;
-              trip_charge = (a*15) + 1000;
-              var total = existing_total + trip_charge;
+                var a = trip_km - 100;
+                trip_charge = (a*(after+hun)) + hun*100;
+                var total = existing_total + trip_charge;
             }
             else {
-            var trip_charge = trip_km * rate;
-            var total = existing_total + trip_charge;
+                var trip_charge = trip_km * hun;
+                var total = existing_total + trip_charge;
             }
             document.getElementById('kilo').value = trip_charge;
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
