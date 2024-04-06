@@ -8,7 +8,8 @@ from datetime import datetime
 
 # Create your views here.
 def mainpage(request):
-    tripn=trip.objects.all()
+    user=user=request.session['uid']
+    tripn=trip.objects.get(user_id=user)
     return render (request, "mainpage.html",{'trip':tripn})
 
 def signup(request):
@@ -29,6 +30,9 @@ def signupfunct(request):
         if User.objects.filter(username=username).exists():
             messages.info(request, "This username is already taken")
             return render(request , "signup.html")
+        if userdata.objects.filter(phone=phone).exists():
+            messages.info(request, "This number is already taken")
+            return render(request , "signup.html")
         else:
             user = User.objects.create_user(
                 first_name=first_name,
@@ -40,6 +44,8 @@ def signupfunct(request):
             userd=user.id
             data=userdata(phone=phone,user_id=userd)
             data.save()
+            data2 = trip(tripnumber="TRIP001",user_id=userd)
+            data2.save()
             return redirect("login")
         
 def log(request):
@@ -62,8 +68,12 @@ def logout(request):
     return redirect("login")
 
 def tripage(request):
-    tripd = tripdata.objects.all()
-    return render(request,"trippage.html",{'trip':tripd})
+    user=request.session['uid']
+    tripd=tripdata.objects.filter(user_id=user)
+    if tripd:
+         return render(request,"trippage.html",{'p':tripd})
+    else:
+        return render(request,"notrip.html")
 
 def startrip(request):
      if request.method == 'POST':
@@ -83,10 +93,10 @@ def startrip(request):
             parking=0
         toll = request.POST.get("toll_charge")
         if toll == "":
-            parking=0
+            toll=0
         tripkm = request.POST.get("tripkm")
         if tripkm == "":
-            parking=0
+            tripkm=0
         total = request.POST.get("total")
         advance = request.POST.get("advance")
         if advance == "":
@@ -95,7 +105,7 @@ def startrip(request):
         tripcharge = request.POST.get("kilo")
         guidecharge = request.POST.get("guide")
         if guidecharge == "":
-            parking=0
+            guidecharge=0
         hun=request.POST.get("hun")
         after=request.POST.get("after")
        
@@ -106,7 +116,8 @@ def startrip(request):
                       parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
                       user_id=userid,)
         data.save()
-        tripn=trip.objects.get(id=1)
+        user=request.session['uid']
+        tripn=trip.objects.get(user_id=user)
         tripnum=tripn.tripnumber
         numeric_part = int(tripnum[4:])
         numeric_part += 1
@@ -114,7 +125,7 @@ def startrip(request):
         tripn.tripnumber=new_trip_number
         tripn.save()
         return redirect("tripage")
-     
+        
 def bill(request,id):
     tripd=tripdata.objects.get(id=id)
     return render(request,'bill.html',{'trip':tripd})
@@ -129,13 +140,35 @@ def apply(request,id):
         tripd.todate = request.POST["edate"]
         tripd.end = request.POST["endplace"]
         tripd.endkm  = request.POST["ending_km"]
-        tripd.parking = request.POST["parking_charge"]
-        tripd.toll= request.POST["toll_charge"]
+        tripd.huncharge = request.POST["hun"]
+        tripd.extra = request.POST["after"]
+        parking = request.POST["parking_charge"]
+        if parking:
+            tripd.parking = request.POST["parking_charge"]
+        else:
+            tripd.parking = 0
+        toll = request.POST["toll_charge"]
+        if toll:
+            tripd.toll = request.POST["toll_charge"]
+        else:
+            tripd.toll = 0
         tripd.tripkm=request.POST["tripkm"]
         tripd.total=request.POST["total"]
-        tripd.advance=request.POST["advance"]
-        tripd.balance=request.POST["balance"]
+        advance = request.POST["advance"]
+        if advance:
+            tripd.advance=request.POST["advance"]
+        else:
+            tripd.advance=0
+        balance = request.POST["balance"]
+        if balance:
+            tripd.balance=request.POST["balance"]
+        else:
+            tripd.balance=0
         tripd.tripcharge=request.POST["kilo"]
-        tripd.guidecharge=request.POST["guide"]
+        guide = request.POST["guide"]
+        if guide:
+           tripd.guidecharge = request.POST["guide"]
+        else:
+            tripd.guidecharge = 0
         tripd.save()
-        return render(request,'bill.html',{'trip':tripd})
+        return redirect("tripage")

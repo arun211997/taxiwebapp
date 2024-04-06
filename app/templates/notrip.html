@@ -16,7 +16,7 @@
             background-color: #333;
             color: #fff;
             padding: 50px 0;
-            margin-top: 400px;
+            margin-top: 500px;
         }
     </style>
 </head>
@@ -50,75 +50,10 @@
     </nav>
 
     <div class="container" style="margin-top: 50px;">
-        <div class="table-responsive">
-            <table class="table text-center table-striped">
-                <thead style="background-color: #0056b3;color: #f2f4f6;">
-                    <tr>
-                        <th>
-                            <div style="width: max-content;">
-                                TRIP NO
-                            </div>
-                        </th>
-                        <th>DATE</th>
-                        <th>
-                            GUEST NAME
-                        </th>
-                        <th>
-                            <div style="width: max-content;" >
-                                TRIP KM
-                            </div> 
-                        </th>
-                        <th>
-                            <div style="width: max-content;">
-                                TOTAL CHARGE
-                            </div>
-                        </th>
-                        <th>ADVANCE</th>
-                        <th>BALANCE</th>
-                        <th>BILL</th>
-                        <th>EDIT</th>
-                    </tr>
-                </thead>
-                {%for p in p%}
-                <tbody style="background-color: #323c46;color: #f2f4f6;">
-                    <tr style="vertical-align: middle;">
-                        <td>
-                            {{p.tripnumber}}
-                        </td>
-                        <td>
-                            <div style="width: max-content;">
-                                {{p.fromdate}}
-                            </div>
-                        </td>
-                        <td style="padding-left: 50px;padding-right: 50px;">
-                            {{p.guestname}}
-                        </td>
-                        <td>
-                            {{p.tripkm}}
-                        </td>
-                        <td style="padding-left: 50px;padding-right: 50px;">
-                            {{p.total}}
-                        </td>
-                        <td>{{p.advance}}</td>
-                        <td>{{p.balance}}</td>
-                        <td>
-                            <button class="btn" style="font-size: medium; background-color:rgb(255, 255, 255);"><a
-                                    href="{% url 'bill' p.id %}"
-                                    style="color: rgb(1, 9, 17);text-decoration: none;">View</a></button>
-                        </td>
-                        <td>
-                            <button class="btn" style="font-size: medium; background-color:rgb(255, 255, 255);"><a
-                                    href="{%url 'edit' p.id%}"
-                                    style="color: rgb(1, 9, 17);text-decoration: none;">Edit</a></button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows here if needed -->
-                </tbody>
-                {%endfor%}
-            </table>
-        </div>
+        <center>
+            <h3>"No Trips</h5>
+        </center>
     </div>
-
     <footer class="footer">
         <div class="container" style="justify-content: center;align-items: center;display: flex;">
             <div class="row" style="width: 100%;">

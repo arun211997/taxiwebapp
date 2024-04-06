@@ -8,6 +8,7 @@ class userdata(models.Model):
     phone=models.TextField(max_length=255)
 
 class trip(models.Model):
+    user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripnumber=models.TextField(default="TRIP000")
 
 class tripdata(models.Model):

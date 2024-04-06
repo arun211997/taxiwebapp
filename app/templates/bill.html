@@ -51,6 +51,12 @@
         <div class="row">
             <div class="col-md-12"
                 style="justify-content: center;display: flex;color: #171616;border-style: solid; align-items: center; font-size: large; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 0.1px;height: 45px;border-color: rgb(20, 23, 22, 0.2);">
+                <img src="/static/t2.png/" alt="" width="35px">TAXI RIDE
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"
+                style="justify-content: center;display: flex;color: #171616;border-style: solid; align-items: center; font-size: large; font-weight: 600;  border-left: 0;border-right: 0;border-top: 0;border-width: 0.1px;height: 45px;border-color: rgb(20, 23, 22, 0.2);">
                 Trip Sheet</div>
         </div>
         <div class="row">
@@ -68,17 +74,17 @@
         <div class="row" style="justify-content: center;">
             <div class="col-md-3"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: center; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 95px;">
-                <span>Vehicle Name :</span>
+                <span>Vehicle Name</span>
                 <span style="font-weight: 400;">{{trip.vehiclename}}</span>
             </div>
             <div class="col-md-3"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: center; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 95px;">
-                <span>Driver Name :</span>
-                <span style="font-weight: 400;">{{trip.drivername}}:</span>
+                <span>Driver Name</span>
+                <span style="font-weight: 400;">{{trip.drivername}}</span>
             </div>
             <div class="col-md-3"
                 style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: center; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 95px;">
-                <span>Guest Name :</span>
+                <span>Guest Name</span>
                 <span style="font-weight: 400;">{{trip.guestname}}</span>
             </div>
         </div>
@@ -110,83 +116,67 @@
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 95px;">
-                <span>Trip Charge</span>
-                <span style="font-weight: 400;">(₹{{trip.huncharge}}/km upto 100km and extra charge of ₹{{trip.extra}}/km after 100km)</span>
-                <span>Total KM : <span style="font-weight: 400;">{{trip.tripkm}}</span></span>
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex;color: #171616;align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 35px;">
+                <span>Total KM</span>
+                <span style="font-weight: 400;">₹{{trip.tripkm}}</span>
             </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;border-style: solid; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
+        </div>
+        <div class="row" style="justify-content: center;">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex;color: #171616;align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
+                <span>Trip Charge</span>
+                <span style="font-weight: 400;"></span>
                 <span style="font-weight: 400;">₹{{trip.tripcharge}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex;color: #171616;align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Parking Charge</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span style="font-weight: 400;">₹{{trip.parking}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+            <div class="col-md-12"
+                style="justify-content:space-between;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Toll Charge</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span style="font-weight: 400;">₹{{trip.toll}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Guide Fee</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span style="font-weight: 400;">₹{{trip.guidecharge}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex;color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Advance</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616;align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;">
                 <span style="font-weight: 400;">₹{{trip.advance}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 45px;">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Total</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
                 <span style="font-weight: bold;">₹{{trip.total}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 45px;">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Balance</span>
-            </div>
-            <div class="col-md-6"
-                style="justify-content: center;display: flex;flex-direction: column; color: #171616; align-items: end; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);">
                 <span style="font-weight: bold;">₹{{trip.balance}}</span>
             </div>
         </div>
-    </div>
+    </div><br>
     <center>
         <button style="background-color: #0056b3; margin-top: 10px;" class="btn btn-primary" id="download"> Download
             pdf</button>
-    </center>
-
+    </center><br>
     <script>
         window.onload = function () {
             document.getElementById("download")

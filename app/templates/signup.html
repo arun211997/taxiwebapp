@@ -140,10 +140,12 @@
           <div class="form-group">
             <!-- <label for="email">Email:</label> -->
             <input class="form-control" type="text" id="phone" name="phone" required placeholder="phone">
+            <span style="color: rgb(247, 201, 201);" id="phoneError" class="error"></span>
           </div>
           <div class="form-group">
             <!-- <label for="email">Email:</label> -->
             <input class="form-control" type="password" id="password" name="password" required placeholder="password">
+            <span id="passwordError" style="color: rgb(247, 201, 201);"></span>
           </div>
           <div class="form-group">
             <!-- <label for="email">Email:</label> -->
@@ -183,15 +185,48 @@
 <script>
   function validatepass() {
     var newp = document.getElementById('password').value;
-    var confirm = document.getElementById('cpassword').value;
+    var confirmPass = document.getElementById('cpassword').value;
+    var phone = document.getElementById('phone').value;
+    var password = document.getElementById('password').value;
 
-    document.getElementById('confirmError').innerHTML = '';
-
-    if (newp != confirm) {
-      document.getElementById('confirmError').innerHTML = 'Passwords do not match';
+    document.getElementById('phoneError').innerHTML = ""
+    document.getElementById('passwordError').innerHTML = ""
+   
+    if (phone.length !== 10) {
+      document.getElementById('phoneError').innerHTML = 'Number must be 10 digits long';
       return false;
     }
 
+    if (password.length < 8) {
+      document.getElementById('passwordError').innerHTML= 'Password must be at least 8 characters long';
+      return false;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      document.getElementById('passwordError').innerHTML = 'Password must contain at least one uppercase letter';
+      return false;
+    }
+
+    if (!/[a-z]/.test(password)) {
+      document.getElementById('passwordError').innerHTML = 'Password must contain at least one lowercase letter';
+      return false;
+    }
+
+    if (!/\d/.test(password)) {
+      document.getElementById('passwordError').innerHTML = 'Password must contain at least one number';
+      return false;
+    }
+
+    if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(password)) {
+      document.getElementById('passwordError').innerHTML = 'Password must contain at least one special character';
+      return false;
+    }
+
+    if (newp !== confirmPass) {
+      document.getElementById('confirmError').innerHTML = 'Passwords do not match';
+      return false;
+    }
+  
     return true;
   }
 </script>
