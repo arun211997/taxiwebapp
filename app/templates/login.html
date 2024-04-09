@@ -104,7 +104,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0056b3;justify-content: center;">
     <a class="navbar-brand" href="#" style="font-weight: bold;color: rgb(255, 255, 255);margin-left: 30PX;"><img
-        style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
+        style="margin-right: 10px;" src="{% static 't2.png' %}" alt="" width="42px">TaxiRide</a>
   </nav>
   <div class="container">
     <center>
@@ -121,8 +121,8 @@
     </center>
     <h1 style="font-size: large; font-weight: bold;">LOG IN</h1>
     <div class="row" style="justify-content: center;">
-      <div class="col-md-4" style="background-color: #0056b3;border-radius: 10px;">
-        <form action="{% url 'log' %}" method="post" style="margin-top: 20px;margin-bottom: 20px;">
+      <div class="col-md-4" style="border-radius: 10px;background-color: #0056b3;">
+        <form action="{% url 'log' %}" method="post" style="margin-top: 20px;margin-bottom: 20px;background-color: #0056b3;">
           {% csrf_token %}
           <div class="form-group">
             <!-- <label for="email">Email:</label> -->

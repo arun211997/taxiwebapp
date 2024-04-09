@@ -111,17 +111,18 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0056b3;">
     <a class="navbar-brand" href="#" style="font-weight: bold;color: rgb(255, 255, 255);margin-left: 30PX;"><img
-        style="margin-right: 10px;" src="/static/t2.png/" alt="" width="42px">TaxiRide</a>
+        style="margin-right: 10px;" src="{% static 't2.png' %}" alt="" width="42px">TaxiRide</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center;align-items: center;">
-      <div style="width: 50%;align-items: baseline;;">
+      <div style="width: 50%;align-items: baseline;">
         <ul class="navbar-nav ml-auto" style="justify-content: space-around;align-items: baseline;">
-          <a class="nav-link"
-            style="color: rgb(229, 232, 234); font-weight: bold; font-size: 1rem; outline: none; border: none; background-color: none;margin-left: 5px;"
-            id="log" type="button" data-toggle="modal" data-target="#signinmodal">New Trip</a>
+          <li class="nav-item">
+            <a class="nav-link"
+              style="color: rgb(229, 232, 234); font-weight: bold; font-size: 1rem; outline: none; border: none;margin-left: 5px;">New
+              Trip</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{%url 'tripage'%}"
@@ -145,8 +146,8 @@
             {% csrf_token %}
             <div class="form-group">
               <!-- <label for="name">Name:</label> -->
-              <input class="form-control" type="text" id="trip_number" name="trip_number" value="{{trip.tripnumber}}" required
-                readonly>
+              <input class="form-control" type="text" id="trip_number" name="trip_number" value="{{trip.tripnumber}}"
+                required readonly>
               <span id="nameError" class="error" style="color: #ffdbdb;"></span>
             </div>
             <div class="form-group">
@@ -229,7 +230,7 @@
                 </div>
                 <div class="form-group">
                   <!-- <label for="parking_charge">Parking charge:</label> -->
-                  <span style="color: #f2f4f6;">(Format:"XX 11 XX 1111", "XX 11 X 1111")</span>
+                  <span style="color: #f2f4f6;">(Format:"XX 1 X 1111", "XX 11 X 1111")</span>
                   <input class="form-control" id="vnumber" name="vnumber" required placeholder="Vehicle number">
                   <span id="vnumberError" class="error" style="color: #f2f4f6;"></span>
                 </div>
@@ -368,7 +369,7 @@
       }
 
       var vehicleRegex = /^[A-Za-z]{2}\s\d{2}\s[A-Za-z]{2}\s\d{4}$/;
-      var vehicleRegex2 = /^[A-Za-z]{2}\s\d{2}\s[A-Za-z]{1}\s\d{4}$/;
+      var vehicleRegex2 = /^[A-Za-z]{2}\s\d{1}\s[A-Za-z]{1}\s\d{4}$/;
       if (!vehicleRegex.test(vnumber) && !vehicleRegex2.test(vnumber)) {
         document.getElementById('vnumberError').innerHTML = 'Invalid vehicle number format';
         return false;
@@ -427,7 +428,7 @@
     // Call calculateTotal on page load to calculate total from existing data
     window.onload = calculateTotal;
 
-    
+
 
   </script>
 </body>
