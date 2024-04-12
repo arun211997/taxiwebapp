@@ -143,6 +143,7 @@ def apply(request,id):
         tripd.huncharge = request.POST["hun"]
         tripd.extra = request.POST["after"]
         parking = request.POST["parking_charge"]
+        tripd.vehiclenumber = request.POST["vnumber"]
         if parking:
             tripd.parking = request.POST["parking_charge"]
         else:

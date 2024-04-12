@@ -192,6 +192,7 @@
                                     <div class="row-3" style="justify-content: center;">
                                         <input class="form-control" style="margin-top: 5px;" type="text" id="startplace"
                                             name="startplace" value="{{trip.start}}">
+                                        <span id="splaceError" class="error" style="color: #ffdbdb;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +228,7 @@
                                     <div class="row-3" style="justify-content: center;">
                                         <input class="form-control" class="form-control" style="margin-top: 5px;"
                                             type="text" id="endplace" name="endplace" value="{{trip.end}}">
+                                        <span id="eplaceError" class="error" style="color: #ffdbdb;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -244,32 +246,51 @@
                                     <!-- <label for="parking_charge">Parking charge:</label> -->
                                     <span style="color: #fff;font-weight: bold;font-size: medium;">Vehicle Number</span>
                                     <input class="form-control" id="vnumber" name="vnumber" required
-                                        placeholder="Vehicle number" value="{{trip.vehiclenumber}}" readonly>
+                                        placeholder="Vehicle number" value="{{trip.vehiclenumber}}">
                                     <span id="vnumberError" class="error" style="color: #f2f4f6;"></span>
                                 </div>
                                 <div class="form-group">
-                                    <!-- <label for="parking_charge">Parking charge:</label> -->
                                     <span style="color: #fff;font-weight: bold;font-size: medium;">Parking charge</span>
-                                    <input class="form-control" type="number" id="parking_charge" name="parking_charge"
-                                        placeholder="Parking charge" value="{{trip.parking}}">
+                                    <div style="display: flex;">
+                                        <input class="form-control" type="number" id="parking_charge"
+                                            name="parking_charge" placeholder="Parking charge" value="{{trip.parking}}">
+                                        <button type="button" id="pclick">+</button>
+                                    </div>
                                     <span id="parkingError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
                                 <div class="form-group">
-                                    <!-- <label for="toll_charge">Toll Charge:</label> -->
+                                    <input style="display: none;" class="form-control" type="number" id="addparking"
+                                        name="additional_parking_charge" placeholder="Additional Parking charge"
+                                        value="">
+                                </div>
+                                <div class="form-group">
                                     <span style="color: #fff;font-weight: bold;font-size: medium;">Toll Charge</span>
-                                    <input class="form-control" type="number" id="toll_charge" name="toll_charge"
-                                        placeholder="Toll Charge" value="{{trip.toll}}">
+                                    <div style="display: flex;">
+                                        <input class="form-control" type="number" id="toll_charge" name="toll_charge"
+                                            placeholder="Toll Charge" value="{{trip.toll}}">
+                                        <button type="button" id="tclick">+</button>
+                                    </div>
                                     <span id="tollError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
                                 <div class="form-group">
-                                    <!-- <label for="toll_charge">Toll Charge:</label> -->
+                                    <input style="display: none;" class="form-control" type="number" id="addtoll"
+                                        name="additional_toll_charge" placeholder="Additional toll charge" value="">
+                                </div>
+                                <div class="form-group">
                                     <span style="color: #fff;font-weight: bold;font-size: medium;">Guide Charge</span>
-                                    <input class="form-control" type="number" id="guide" name="guide"
-                                        placeholder="Guide  Charge" value="{{trip.guidecharge}}">
-                                    <span id="tollError" class="error" style="color: #ffdbdb;"></span>
+                                    <div style="display: flex;">
+                                        <input class="form-control" type="number" id="guide" name="guide"
+                                            placeholder="Guide  Charge" value="{{trip.guidecharge}}">
+                                        <button type="button" id="gclick">+</button>
+                                    </div>
+                                    <span id="guideError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
                                 <div class="form-group">
-                                    <!-- <label for="toll_charge">Toll Charge:</label> -->
+                                    <input style="display: none;" class="form-control" type="number" id="addguide"
+                                        name="additional_guide_charge" placeholder="Additional Guide charge" value="">
+                                </div>
+                                <div class="form-group">
+                                    <!-- <label for="toll_charge">Trip Km:</label> -->
                                     <span style="color: #fff;font-weight: bold;font-size: medium;">Trip KM</span>
                                     <input class="form-control" type="number" id="tripkm" name="tripkm"
                                         placeholder="Trip Km" readonly>
@@ -299,7 +320,6 @@
                                         charge</span>
                                     <input class="form-control" type="number" id="kilo" name="kilo"
                                         placeholder="Advance" value="{{trip.tripcharge}}" readonly>
-                                    <span id="advanceError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
                                 <div class="form-group">
                                     <!-- <label for="total">Total:</label> -->
@@ -363,8 +383,126 @@
         </div>
     </footer>
 
+
     <script>
-        var existing_total = parseFloat(document.getElementById('total').value) || 0;
+        document.getElementById("pclick").addEventListener("click", function () {
+            var apark = document.getElementById("addparking")
+            apark.style.display = "block"
+        });
+        document.getElementById("tclick").addEventListener("click", function () {
+            var atoll = document.getElementById("addtoll")
+            atoll.style.display = "block"
+        });
+        document.getElementById("gclick").addEventListener("click", function () {
+            var atoll = document.getElementById("addguide")
+            atoll.style.display = "block"
+        });
+        var oldpark = parseInt(document.getElementById("parking_charge").value);
+        var oldtoll = parseInt(document.getElementById("toll_charge").value);
+        var oldguide = parseInt(document.getElementById("guide").value);
+        function calculatepark() {
+            var pcharge = parseInt(document.getElementById("addparking").value) || 0;
+            var total = pcharge + oldpark;
+            document.getElementById('parking_charge').value = total
+        };
+        function calculatetoll() {
+            var tcharge = parseInt(document.getElementById("addtoll").value) || 0;
+            var total = tcharge + oldtoll;
+            document.getElementById('toll_charge').value = total
+        };
+        function calculateguide() {
+            var gcharge = parseInt(document.getElementById("addguide").value) || 0;
+            var total = gcharge + oldguide;
+            document.getElementById('guide').value = total
+        };
+        document.getElementById('addparking').addEventListener('input', calculatepark);
+        document.getElementById('addtoll').addEventListener('input', calculatetoll);
+        document.getElementById('addguide').addEventListener('input', calculateguide);
+    </script>
+    <script>
+        function validateForm() {
+            var parking_charge = parseInt(document.getElementById("parking_charge").value);
+            var toll_charge = parseInt(document.getElementById("toll_charge").value);
+            var advance = parseInt(document.getElementById("advance").value);
+            var start = parseInt(document.getElementById("starting_km").value);
+            var end = parseInt(document.getElementById("ending_km").value);
+            var vnumber = document.getElementById("vnumber").value;
+            var eplace = document.getElementById("endplace").value;
+            var splace = document.getElementById("startplace").value;
+            var guide = parseInt(document.getElementById("guide").value);
+            document.getElementById('parkingError').innerHTML = '';
+            document.getElementById('tollError').innerHTML = '';
+            document.getElementById('guideError').innerHTML = '';
+            document.getElementById('advanceError').innerHTML = '';
+            document.getElementById('startkmError').innerHTML = '';
+            document.getElementById('endkmError').innerHTML = '';
+            document.getElementById('vnumberError').innerHTML = '';
+            document.getElementById('eplaceError').innerHTML = '';
+            document.getElementById('splaceError').innerHTML = '';
+
+
+            if (start < 0) {
+                document.getElementById('startkmError').innerHTML = 'enter valid km';
+                return false;
+            }
+            if (end < 0) {
+                document.getElementById('endkmError').innerHTML = 'enter valid km';
+                return false;
+            }
+            if (guide < 0) {
+                document.getElementById('guideError').innerHTML = 'charges cannot be negative';
+                return false;
+            }
+
+            var pattern = /^[A-Za-z]+$/;
+
+            if (splace != "") {
+                if (!pattern.test(splace)) {
+                    document.getElementById('splaceError').innerHTML = 'Place cannot be umbers';
+                    return false;
+                }
+            }
+
+
+            if (eplace != "") {
+                if (!pattern.test(eplace)) {
+                    document.getElementById('eplaceError').innerHTML = 'Place cannot be Numbers';
+                    return false;
+                }
+            }
+
+            var vehicleRegex = /^[A-Za-z]{2}\s\d{2}\s[A-Za-z]{2}\s\d{4}$/;
+            var vehicleRegex2 = /^[A-Za-z]{2}\s\d{1}\s[A-Za-z]{1}\s\d{4}$/;
+
+            if (!vehicleRegex.test(vnumber) && !vehicleRegex2.test(vnumber)) {
+                document.getElementById('vnumberError').innerHTML = 'Invalid vehicle number format';
+                return false;
+            }
+
+            if (parking_charge < 0) {
+                document.getElementById('parkingError').innerHTML = 'charges cannot be negative';
+                return false;
+            }
+            if (toll_charge < 0) {
+                document.getElementById('tollError').innerHTML = 'charges cannot be negative';
+                return false;
+            }
+            if (advance < 0) {
+                document.getElementById('advanceError').innerHTML = 'enter valid amount';
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <script>
+        document.getElementById("pclick").addEventListener("click", function () {
+            var apark = document.getElementById("addparking");
+            apark.style.display = "block";
+        });
+    </script>
+
+    <script>
         function calculateTotal() {
             var adv = parseInt(document.getElementById('advance').value) || 0;
             var starting_km = parseInt(document.getElementById('starting_km').value);
@@ -375,7 +513,12 @@
             var after = parseInt(document.getElementById('after').value);
             if (trip_km > 100) {
                 var a = trip_km - 100;
-                trip_charge = (a *after) + hun;
+                var b = parseFloat(a / 100);
+                var round = Math.ceil(b);
+                console.log(a);
+                console.log(round);
+                console.log(hun);
+                trip_charge = (a * after) + (hun * round) + hun;
                 var total = trip_charge;
             }
             else {
@@ -392,8 +535,7 @@
                 document.getElementById('balance').value = 0;
             }
             else {
-                console.log(adv)
-                document.getElementById('balance').value = total-adv;
+                document.getElementById('balance').value = total - adv;
             }
         }
         document.getElementById('ending_km').addEventListener('input', calculateTotal);
@@ -403,8 +545,6 @@
         document.getElementById('hun').addEventListener('input', calculateTotal);
         document.getElementById('after').addEventListener('input', calculateTotal);
         document.getElementById('advance').addEventListener('input', calculateTotal);
-
-        // Call calculateTotal on page load to calculate total from existing data
         window.onload = calculateTotal;
     </script>
 </body>
