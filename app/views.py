@@ -130,6 +130,9 @@ def bill(request,id):
     tripd=tripdata.objects.get(id=id)
     return render(request,'bill.html',{'trip':tripd})
 
+def taxiland(request):
+    return render(request,'taxiland.html')
+
 def edit(request,id):
     tripd=tripdata.objects.get(id=id)
     return render(request,'edit.html',{'trip':tripd})

@@ -12,6 +12,7 @@ urlpatterns = [
      path('tripage',views.tripage,name='tripage'),
      path('startrip',views.startrip,name='startrip'),
      path('bill/<int:id>',views.bill,name='bill'),
+     path('taxiland',views.taxiland,name='taxiland'),
      path('edit/<int:id>',views.edit,name='edit'),
      path('apply/<int:id>',views.apply,name='apply'),
 ]    
