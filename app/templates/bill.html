@@ -53,21 +53,26 @@
                             style="color: rgb(222, 228, 233); font-weight: bold; font-size: medium; outline: none; border: none;margin-left: 5px;">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{%url 'taxiland'%}"
-                            style="color: rgb(222, 228, 233); font-weight: bold; font-size: medium; outline: none; border: none;margin-left: 5px;">Comtact</a>
+                        <a class="nav-link" href="{%url 'remarks'%}"
+                            style="color: rgb(222, 228, 233); font-weight: bold; font-size: medium; outline: none; border: none;margin-left: 5px;">Remarks</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container" id="bill" style="margin-top: 50px;background-color: #ffffff;">
-        <div class="row">
-            <div class="col-md-12"
-                style="justify-content: center;display: flex;color: #171616;border-style: solid; align-items: center; font-size: large; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 0.1px;height: 45px;border-color: rgb(20, 23, 22, 0.2);">
+    <div class="container" id="bill" style="margin-top: 50px;background-color: #ffffff;height: max-content;">
+        <div class="row" style="height: 125px;align-items: center;">
+            <div class="col-md-6"
+                style="justify-content: start;display: flex;color: #171616;border-style: solid; align-items: center; font-size: large; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 0.1px;height: 45px;border-color: rgba(255, 255, 255, 0);align-items: center;">
                 <img src="{% static 't2.png' %}" alt="" width="35px">TAXI RIDE
             </div>
+            <div class="col-md-6"
+                style="justify-content: end;display: flex;color: #171616;border-style: solid; align-items: center; font-size: large; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 0.1px;height: 45px;border-color: rgba(255, 255, 255, 0);align-items: center;">
+                <img src="{% static 'q3.png' %}" alt="" width="75px">
+            </div>
         </div>
+
         <div class="row">
             <div class="col-md-12"
                 style="justify-content: center;display: flex;color: #171616;border-style: solid; align-items: center; font-size: large; font-weight: 600;  border-left: 0;border-right: 0;border-top: 0;border-width: 0.1px;height: 45px;border-color: rgb(20, 23, 22, 0.2);">
@@ -143,7 +148,7 @@
         <div class="row" style="justify-content: center;">
             <div class="col-md-12"
                 style="justify-content: space-between;display: flex;color: #171616;align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-width: 1px;border-color: rgb(20, 23, 22, 0.2);height: 35px;">
-                <span>Extra charge /km  after 100km</span>
+                <span>Extra charge /km after 100km</span>
                 <span style="font-weight: 400;">₹{{trip.extra}}</span>
             </div>
         </div><br>
@@ -181,6 +186,28 @@
                 style="justify-content: space-between;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
                 <span>Guide Fee</span>
                 <span style="font-weight: 400;">₹{{trip.guidecharge}}</span>
+            </div>
+        </div>
+        <div class="row" style="justify-content: center;">
+            <div class="col-md-12"
+                style="justify-content: center;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+                <span>Guide Charges</span>
+            </div>
+        </div>
+        <div class="row" style="justify-content: center;">
+            {%for p in guide%}
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex; color: #171616; align-items: start; font-size: medium;border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+                <span>{{p.placw}}</span>
+                <span style="font-weight: 400;">₹{{p.charge}}</span>
+            </div>
+            {%endfor%}
+        </div><br>
+        <div class="row" style="justify-content: center;">
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex;color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+                <span>Other Charges</span>
+                <span style="font-weight: 400;">₹{{trip.other}}</span>
             </div>
         </div>
         <div class="row" style="justify-content: center;">

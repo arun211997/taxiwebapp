@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User,auth
-from app.models import userdata,trip,tripdata
+from app.models import userdata,trip,tripdata,contact,guidemod
 from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime
@@ -128,7 +128,10 @@ def startrip(request):
         
 def bill(request,id):
     tripd=tripdata.objects.get(id=id)
-    return render(request,'bill.html',{'trip':tripd})
+    userid= request.session['uid']
+    guide=guidemod.objects.filter(user_id=userid)
+    context = {'trip':tripd,'guide':guide}
+    return render(request,'bill.html',context)
 
 def taxiland(request):
     return render(request,'taxiland.html')
@@ -136,6 +139,15 @@ def taxiland(request):
 def edit(request,id):
     tripd=tripdata.objects.get(id=id)
     return render(request,'edit.html',{'trip':tripd})
+
+def review(request):
+    name = request.POST["name"]
+    phone = request.POST["phone"]
+    review = request.POST["message"]
+    data = contact(name=name, phone=phone, review = review)
+    data.save()
+    return redirect("taxiland")
+
 
 def apply(request,id):
     tripd = tripdata.objects.get(id=id)
@@ -175,4 +187,23 @@ def apply(request,id):
         else:
             tripd.guidecharge = 0
         tripd.save()
+        othercharge = request.POST["other"]
+        if othercharge:
+            tripd.other = othercharge
+            print("yes")
+        else:
+            tripd.other = 0
+            print("no")
+        charge=request.POST["addguide"]
+        if charge:
+            userid= request.session['uid']
+            charge=request.POST["addguide"]
+            place=request.POST["addplace"]
+            guidedata = guidemod(charge=charge,placw=place,user_id=userid)
+            guidedata.save()
+        tripd.save()
         return redirect("tripage")
+    
+def remarks(request):
+    review = contact.objects.all()
+    return render(request , "review.html" ,{'review':review})

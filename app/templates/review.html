@@ -34,7 +34,7 @@
                 <ul class="navbar-nav ml-auto" style="justify-content: space-around;align-items: baseline;">
                     <a class="nav-link" href="{%url 'mainpage'%}"
                         style="color: rgb(229, 232, 234); font-weight: bold; font-size: 1rem; outline: none; border: none; background-color: none;margin-left: 5px;">New
-                        Tri</a>
+                        Trip</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'tripage'%}"
@@ -53,12 +53,27 @@
         </div>
     </nav>
 
-    <div class="container" style="margin-top: 50px;">
-        <center>
-            <h3>"No Trips"</h5>
-        </center>
+    <div class="container" style="margin-top: 100px;">
+        {% for p in review %}
+        <div class="row" style="background-color: #0056b3; color: #fff; font-size: medium;padding-top: 5px;padding-bottom: 5px;justify-content: space-between;">
+            <div class="col-md-5">
+                <span style="font-weight: bold;">{{ p.name }}</span>
+            </div>
+            <div class="col-md-5" style="justify-content: end;display: flex;">
+                <span>Ph : {{ p.phone }}</span>
+            </div>
+        </div>
+        <div class="row" style="background-color: #ffffff; color: #111010; font-size: medium;border-style: solid;border-top:0;border-width: 0.5px;height: max-content;">
+            <div class="col-md-12" style="justify-content: center;display: flex;">
+                <span> {{ p.review }}</span>
+            </div>
+        </div><br>
+        {% endfor %}
     </div>
-    <footer class="footer">
+
+
+
+    <footer class="footer" style="background-color: #333;">
         <div class="container" style="justify-content: center;align-items: center;display: flex;">
             <div class="row" style="width: 100%;">
                 <div class="col-md-3">

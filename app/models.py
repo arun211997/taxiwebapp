@@ -34,3 +34,14 @@ class tripdata(models.Model):
     guidecharge=models.TextField(null=True)
     huncharge=models.TextField(null=True)
     extra=models.TextField(null=True)
+    other=models.TextField(null=True)
+
+class contact(models.Model):
+    name = models.TextField()
+    phone = models.TextField()
+    review = models.TextField()
+
+class guidemod(models.Model):
+    user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
+    charge = models.TextField(null=True)
+    placw = models.TextField(null=True)

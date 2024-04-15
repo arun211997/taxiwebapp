@@ -15,4 +15,6 @@ urlpatterns = [
      path('taxiland',views.taxiland,name='taxiland'),
      path('edit/<int:id>',views.edit,name='edit'),
      path('apply/<int:id>',views.apply,name='apply'),
+     path('review',views.review,name='review'),
+     path('remarks',views.remarks,name='remarks'),
 ]    
