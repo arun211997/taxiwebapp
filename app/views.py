@@ -116,6 +116,14 @@ def startrip(request):
                       parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
                       user_id=userid,)
         data.save()
+        
+        charge=request.POST["addguide"]
+        if charge:
+            charge=request.POST["addguide"]
+            place=request.POST["addplace"]
+            guidedata = guidemod(charge=charge,placw=place,tripno= tn)
+            guidedata.save()
+
         user=request.session['uid']
         tripn=trip.objects.get(user_id=user)
         tripnum=tripn.tripnumber
@@ -128,8 +136,8 @@ def startrip(request):
         
 def bill(request,id):
     tripd=tripdata.objects.get(id=id)
-    userid= request.session['uid']
-    guide=guidemod.objects.filter(user_id=userid)
+    tripno = tripd.tripnumber
+    guide=guidemod.objects.filter(tripno=tripno)
     context = {'trip':tripd,'guide':guide}
     return render(request,'bill.html',context)
 
@@ -196,10 +204,10 @@ def apply(request,id):
             print("no")
         charge=request.POST["addguide"]
         if charge:
-            userid= request.session['uid']
+            tripno = tripd.tripnumber
             charge=request.POST["addguide"]
             place=request.POST["addplace"]
-            guidedata = guidemod(charge=charge,placw=place,user_id=userid)
+            guidedata = guidemod(charge=charge,placw=place,tripno=tripno)
             guidedata.save()
         tripd.save()
         return redirect("tripage")
