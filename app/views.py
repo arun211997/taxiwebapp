@@ -98,14 +98,18 @@ def startrip(request):
         if tripkm == "":
             tripkm=0
         total = request.POST.get("total")
+        print(total)
         advance = request.POST.get("advance")
         if advance == "":
             advance=0
         balance = request.POST.get("balance")
-        tripcharge = request.POST.get("kilo")
-        guidecharge = request.POST.get("guide")
+        tripcharge = 0
+        guidecharge = request.POST.get("guide_charge")
         if guidecharge == "":
             guidecharge=0
+        othercharge = request.POST.get("other")
+        if othercharge == "":
+            othercharge=0
         hun=request.POST.get("hun")
         after=request.POST.get("after")
        
@@ -114,15 +118,20 @@ def startrip(request):
         data=tripdata(tripnumber=tn,drivername=dn,guestname=gn,startkm=sk,start=sp,fromdate=fd,todate=ed,
                       endkm=ek,end=ep,vehiclename=vname,vehiclenumber=vnumber,tripcharge=tripcharge,guidecharge=guidecharge,
                       parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
-                      user_id=userid,)
+                      user_id=userid,other = othercharge)
         data.save()
         
-        charge=request.POST["addguide"]
+        charge = request.POST.get("count")
         if charge:
-            charge=request.POST["addguide"]
-            place=request.POST["addplace"]
-            guidedata = guidemod(charge=charge,placw=place,tripno= tn)
-            guidedata.save()
+            inputcount = int(charge)
+            for x in range(1, inputcount + 1):
+                guide_id = "guide_charge_" + str(x)
+                place_id = "addplace_" + str(x)
+                gcharge = request.POST.get(guide_id)
+                gplace = request.POST.get(place_id)
+                if gcharge and gplace:
+                    guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
+                    guidedata.save()
 
         user=request.session['uid']
         tripn=trip.objects.get(user_id=user)
@@ -138,7 +147,8 @@ def bill(request,id):
     tripd=tripdata.objects.get(id=id)
     tripno = tripd.tripnumber
     guide=guidemod.objects.filter(tripno=tripno)
-    context = {'trip':tripd,'guide':guide}
+    charge = int(tripd.guidecharge)
+    context = {'trip':tripd,'guide':guide ,'charge':charge}
     return render(request,'bill.html',context)
 
 def taxiland(request):
@@ -189,9 +199,9 @@ def apply(request,id):
         else:
             tripd.balance=0
         tripd.tripcharge=request.POST["kilo"]
-        guide = request.POST["guide"]
+        guide = request.POST["guide_charge"]
         if guide:
-           tripd.guidecharge = request.POST["guide"]
+           tripd.guidecharge = request.POST["guide_charge"]
         else:
             tripd.guidecharge = 0
         tripd.save()
@@ -202,13 +212,20 @@ def apply(request,id):
         else:
             tripd.other = 0
             print("no")
-        charge=request.POST["addguide"]
+        
+        charge = request.POST.get("count")
         if charge:
-            tripno = tripd.tripnumber
-            charge=request.POST["addguide"]
-            place=request.POST["addplace"]
-            guidedata = guidemod(charge=charge,placw=place,tripno=tripno)
-            guidedata.save()
+            inputcount = int(charge)
+            for x in range(1, inputcount + 1):
+                guide_id = "guide_charge_" + str(x)
+                place_id = "addplace_" + str(x)
+                gcharge = request.POST.get(guide_id)
+                gplace = request.POST.get(place_id)
+                tn = tripd.tripnumber
+                if gcharge and gplace:
+                    guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
+                    guidedata.save()
+
         tripd.save()
         return redirect("tripage")
     

@@ -188,6 +188,7 @@
                 <span style="font-weight: 400;">₹{{trip.guidecharge}}</span>
             </div>
         </div>
+        {%if charge > 0 %}
         <div class="row" style="justify-content: center;">
             <div class="col-md-12"
                 style="justify-content: center;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
@@ -203,6 +204,8 @@
             </div>
             {%endfor%}
         </div><br>
+        {%endif%}
+
         <div class="row" style="justify-content: center;">
             <div class="col-md-12"
                 style="justify-content: space-between;display: flex;color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
@@ -359,6 +362,23 @@
                 <span style="font-weight: 400;">₹{{trip.guidecharge}}</span>
             </div>
         </div>
+        {%if charge > 0 %}
+        <div class="row" style="justify-content: center;">
+            <div class="col-md-12"
+                style="justify-content: center;display: flex; color: #171616; align-items: start; font-size: medium; font-weight: bold;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+                <span>Guide Charges</span>
+            </div>
+        </div>
+        <div class="row" style="justify-content: center;">
+            {%for p in guide%}
+            <div class="col-md-12"
+                style="justify-content: space-between;display: flex; color: #171616; align-items: start; font-size: medium;border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
+                <span>{{p.placw}}</span>
+                <span style="font-weight: 400;">₹{{p.charge}}</span>
+            </div>
+            {%endfor%}
+        </div><br>
+        {%endif%}
         <div class="row" style="justify-content: center;">
             <div class="col-12"
                 style="justify-content: space-between;display: flex;color: #171616; align-items: start; font-size: medium; font-weight: bold; border-style: solid;  border-left: 0;border-right: 0;border-top: 0;border-color: rgb(20, 23, 22, 0.2);">
