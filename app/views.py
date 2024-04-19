@@ -122,6 +122,7 @@ def startrip(request):
         data.save()
         
         charge = request.POST.get("count")
+        print(charge)
         if charge:
             inputcount = int(charge)
             for x in range(1, inputcount + 1):
@@ -178,12 +179,14 @@ def apply(request,id):
         parking = request.POST["parking_charge"]
         tripd.vehiclenumber = request.POST["vnumber"]
         if parking:
-            tripd.parking = request.POST["parking_charge"]
+            extrapark = int(request.POST["totalparking"])
+            tripd.parking = int(parking) + extrapark
         else:
             tripd.parking = 0
         toll = request.POST["toll_charge"]
         if toll:
-            tripd.toll = request.POST["toll_charge"]
+            extratoll = int(request.POST["totaltoll"])
+            tripd.toll = int(toll) + extratoll
         else:
             tripd.toll = 0
         tripd.tripkm=request.POST["tripkm"]
@@ -201,28 +204,34 @@ def apply(request,id):
         tripd.tripcharge=request.POST["kilo"]
         guide = request.POST["guide_charge"]
         if guide:
-           tripd.guidecharge = request.POST["guide_charge"]
+          extraguide = int(request.POST["totalguide"])
+          tripd.guidecharge = int(guide) + extraguide
         else:
             tripd.guidecharge = 0
         tripd.save()
         othercharge = request.POST["other"]
         if othercharge:
-            tripd.other = othercharge
-            print("yes")
+            extraother = int(request.POST["totalother"])
+            tripd.other = int(othercharge) + extraother
         else:
             tripd.other = 0
             print("no")
         
-        charge = request.POST.get("count")
-        if charge:
-            inputcount = int(charge)
+        charge = int(request.POST.get("count"))
+        print(charge)
+        if charge > 0:
+            inputcount = charge
             for x in range(1, inputcount + 1):
                 guide_id = "guide_charge_" + str(x)
+                print(guide_id)
                 place_id = "addplace_" + str(x)
+                print(place_id)
                 gcharge = request.POST.get(guide_id)
+                print(gcharge)
                 gplace = request.POST.get(place_id)
+                print(gplace)
                 tn = tripd.tripnumber
-                if gcharge and gplace:
+                if gcharge:
                     guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
                     guidedata.save()
 

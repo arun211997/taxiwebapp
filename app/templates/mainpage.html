@@ -241,55 +241,72 @@
                   <span id="vnumberError" class="error" style="color: #f2f4f6;"></span>
                 </div>
                 <div class="form-group">
-                  <span style="color: #fff; font-weight: bold; font-size: medium;">Parking charge</span><br>
+                  <span style="color: #fff; font-weight: bold; font-size: medium;">Parking
+                    charge</span><br>
+                  <input class="form-control" type="number" style="display: none;" id="totalparking" name="totalparking"
+                    placeholder="Total charge" value="0">
                   <span id="parkingError" class="error" style="color: #ffdbdb;"></span>
-                  <div id="parkingContainer" style="display: flex;flex-direction: column;">
+                  <div id="parking" style="display: flex;flex-direction: column;">
                     <div style="display: flex;justify-content:space-around;">
                       <input class="form-control" type="number" id="parking_charge" name="parking_charge"
-                        placeholder="Parking charge" value="">
+                        placeholder="Parking charge" value="0">
                       <button style="border: none;border-radius: 4px;margin-right: 1px;" type="button"
                         class="plus-btn">+</button>
-                      <button style="border: none;border-radius: 4px;" type="button" class="minus-btn">-</button>
                     </div>
+                  </div>
+                  <div id="parkingContainer" style="display: flex;flex-direction: column;">
+
                   </div>
                   <span id="parkingError" class="error" style="color: #ffdbdb;"></span>
                 </div>
                 <div class="form-group">
                   <span style="color: #fff; font-weight: bold; font-size: medium;">Toll charge</span>
-                  <div id="tollContainer" style="display: flex;flex-direction: column;">
+                  <input class="form-control" type="number" style="display: none;" id="totaltoll" name="totaltoll"
+                    placeholder="Total charge" value="0">
+                  <div id="tolling" style="display: flex;flex-direction: column;">
                     <div style="display: flex;justify-content:space-around;">
                       <input class="form-control" type="number" id="toll_charge" name="toll_charge"
-                        placeholder="Toll charge" value="">
+                        placeholder="Toll charge" value="0">
                       <button style="border: none;border-radius: 4px;margin-right: 1px;" type="button"
                         class="tplus-btn">+</button>
-                      <button style="border: none;border-radius: 4px;" type="button" class="tminus-btn">-</button>
                     </div>
+                  </div>
+                  <div id="tollContainer" style="display: flex;flex-direction: column;">
+
                   </div>
                   <span id="tollError" class="error" style="color: #ffdbdb;"></span>
                 </div>
                 <div class="form-group">
-                  <input type="text" style="display: none;" id="count" value="0" name="count">
+                  <input type="text" style="display: none;" id="count" name="count">
+                  <input class="form-control" type="number" style="display: none;" id="totalguide" name="totalguide"
+                    placeholder="Total charge" value="0">
                   <span style="color: #fff; font-weight: bold; font-size: medium;">Guide charge</span>
-                  <div id="guideContainer" style="display: flex;flex-direction: column;">
+                  <div id="guide" style="display: flex;flex-direction: column;">
                     <div style="display: flex;justify-content:space-around;">
                       <input class="form-control" type="number" id="guide_charge" name="guide_charge"
-                        placeholder="Guide charge" value="">
+                        placeholder="Guide charge" value="0">
                       <button style="border: none;border-radius: 4px;margin-right: 1px;" type="button"
                         class="gplus-btn">+</button>
-                      <button style="border: none;border-radius: 4px;" type="button" class="gminus-btn">-</button>
                     </div>
+                  </div>
+                  <div id="guideContainer" style="display: flex;flex-direction: column;">
+
                   </div>
                   <span id="guideError" class="error" style="color: #ffdbdb;"></span>
                 </div>
                 <div class="form-group">
                   <span style="color: #fff; font-weight: bold; font-size: medium;">other charge</span>
-                  <div id="otherContainer" style="display: flex;flex-direction: column;">
+                  <input class="form-control" type="number" style="display: none;" id="totalother" name="totalother"
+                    placeholder="Total charge" value="0">
+                  <div id="others" style="display: flex;flex-direction: column;">
                     <div style="display: flex;justify-content:space-around;">
                       <input class="form-control" type="number" id="other" name="other" placeholder="other charge"
-                        value="">
+                        value="0">
                       <button style="border: none;border-radius: 4px;margin-right: 1px;" type="button"
                         class="oplus-btn">+</button>
-                      <button style="border: none;border-radius: 4px;" type="button" class="ominus-btn">-</button>
+                    </div>
+                    <div id="otherContainer" style="display: flex;flex-direction: column;">
+
                     </div>
                   </div>
                   <span id="otherError" class="error" style="color: #ffdbdb;"></span>
@@ -379,23 +396,40 @@
     document.addEventListener("DOMContentLoaded", function () {
       const parkingContainer = document.getElementById("parkingContainer");
       const plusBtn = document.querySelector(".plus-btn");
-      const minusBtn = document.querySelector(".minus-btn");
       let inputCount = 1;
       total = 0;
       plusBtn.addEventListener("click", function () {
+        const newdiv = document.createElement("div");
         const newInput = document.createElement("input");
+        newdiv.classList.add("adddiv")
         newInput.classList.add("form-control");
         newInput.type = "number";
         newInput.placeholder = "Add parking charge";
         newInput.value = 0;
         newInput.id = "parking_charge_" + inputCount;
-        parkingContainer.appendChild(newInput);
+        newdiv.appendChild(newInput);
+        const newInput2 = document.createElement("button");
+        newInput2.type = "button";
+        newInput2.textContent = "-";
+        newInput2.classList.add("minusBtn");
+        newInput2.style.border = "none"
+        newInput2.style.borderRadius = "5px"
+        newInput2.style.backgroundColor = "red"
+        newInput2.style.color = "white"
+        newdiv.appendChild(newInput2);
+        newdiv.style.display = "flex";
+        newdiv.style.marginTop = "10px";
+        parkingContainer.appendChild(newdiv);
         console.log(newInput.id)
         inputCount++;
         console.log(inputCount)
         document.getElementById(newInput.id).addEventListener('input', function () {
           if (inputCount > 1) {
             total = 0;
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var newother = parseInt(document.getElementById("totalother").value);
             var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
             var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
             var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
@@ -404,8 +438,63 @@
               var eid = "parking_charge_" + j;
               console.log(eid)
               total = total + parseInt(document.getElementById(eid).value);
-              document.getElementById("parking_charge").value = total;
-              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge;
+              document.getElementById("totalparking").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newtoll + newguide + newother;
+              document.getElementById("total").value = ptotal;
+              var adv = parseInt(document.getElementById('advance').value) || 0;
+              if (ptotal < adv && adv > ptotal) {
+                document.getElementById('balance').value = 0;
+              }
+              else {
+                document.getElementById('balance').value = ptotal - adv;
+              }
+            }
+          };
+        });
+
+        newInput2.addEventListener("click", function () {
+          parkingContainer.removeChild(newdiv);
+          inputCount--;
+
+          console.log(inputCount)
+          if (inputCount == 1) {
+            document.getElementById("totalparking").value = 0;
+            total = 0;
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newother = parseInt(document.getElementById("totalother").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
+            ptotal = toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newtoll + newguide + newother;
+            document.getElementById("total").value = ptotal;
+            var adv = parseInt(document.getElementById('advance').value) || 0;
+            if (ptotal < adv && adv > ptotal) {
+              document.getElementById('balance').value = 0;
+            }
+            else {
+              document.getElementById('balance').value = ptotal - adv;
+            }
+          }
+
+          if (inputCount > 1) {
+            total = 0;
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newother = parseInt(document.getElementById("totalother").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
+            for (var j = 1; j < inputCount; j++) {
+              var eid = "parking_charge_" + j;
+              console.log(eid)
+              total = total + parseInt(document.getElementById(eid).value);
+              document.getElementById("totalparking").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newtoll + newguide + newother;
               document.getElementById("total").value = ptotal;
               var adv = parseInt(document.getElementById('advance').value) || 0;
               if (ptotal < adv && adv > ptotal) {
@@ -418,52 +507,6 @@
           };
         });
       });
-      minusBtn.addEventListener("click", function () {
-        const inputs = parkingContainer.querySelectorAll("input.form-control");
-        if (inputs.length > 1) {
-          parkingContainer.removeChild(inputs[inputs.length - 1]);
-          inputCount--;
-          if (inputCount == 1) {
-            document.getElementById("parking_charge").value = 0;
-            total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
-            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
-            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
-            var other_charge = parseFloat(document.getElementById('other').value) || 0;
-            ptotal = total + toll_charge + guide_charge + other_charge + trip_charge;
-            document.getElementById("total").value = ptotal;
-            var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ptotal < adv && adv > ptotal) {
-              document.getElementById('balance').value = 0;
-            }
-            else {
-              document.getElementById('balance').value = ptotal - adv;
-            }
-          }
-        }
-        if (inputCount > 1) {
-          total = 0;
-          var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
-          var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
-          var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
-          var other_charge = parseFloat(document.getElementById('other').value) || 0;
-          for (var j = 1; j < inputCount; j++) {
-            var eid = "parking_charge_" + j;
-            console.log(eid)
-            total = total + parseInt(document.getElementById(eid).value);
-            document.getElementById("parking_charge").value = total;
-            ptotal = total + toll_charge + guide_charge + other_charge + trip_charge;
-            document.getElementById("total").value = ptotal;
-            var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ptotal < adv && adv > ptotal) {
-              document.getElementById('balance').value = 0;
-            }
-            else {
-              document.getElementById('balance').value = ptotal - adv;
-            }
-          }
-        };
-      });
       console.log(inputCount)
     });
   </script>
@@ -472,93 +515,115 @@
     document.addEventListener("DOMContentLoaded", function () {
       const tollContainer = document.getElementById("tollContainer");
       const plusBtn = document.querySelector(".tplus-btn");
-      const minusBtn = document.querySelector(".tminus-btn");
       let inputCount = 1;
       total = 0;
       plusBtn.addEventListener("click", function () {
+        const newdiv = document.createElement("div");
         const newInput = document.createElement("input");
+        newdiv.classList.add("adddiv")
         newInput.classList.add("form-control");
         newInput.type = "number";
-        newInput.placeholder = "Add Toll charge";
+        newInput.placeholder = "Add parking charge";
         newInput.value = 0;
         newInput.id = "toll_charge_" + inputCount;
-        tollContainer.appendChild(newInput);
+        newdiv.appendChild(newInput);
+        const newInput2 = document.createElement("button");
+        newInput2.type = "button";
+        newInput2.textContent = "-";
+        newInput2.classList.add("minusBtn");
+        newInput2.style.border = "none"
+        newInput2.style.borderRadius = "5px"
+        newInput2.style.backgroundColor = "red"
+        newInput2.style.color = "white"
+        newdiv.appendChild(newInput2);
+        newdiv.style.display = "flex";
+        newdiv.style.marginTop = "10px";
+        tollContainer.appendChild(newdiv);
         console.log(newInput.id)
         inputCount++;
         console.log(inputCount)
         document.getElementById(newInput.id).addEventListener('input', function () {
           if (inputCount > 1) {
             total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newother = parseInt(document.getElementById("totalother").value);
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
-            console.log(parking_charge)
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
             var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
             var other_charge = parseFloat(document.getElementById('other').value) || 0;
             for (var j = 1; j < inputCount; j++) {
-              var val = parseInt(document.getElementById(eid)).value
               var eid = "toll_charge_" + j;
               console.log(eid)
               total = total + parseInt(document.getElementById(eid).value);
-              document.getElementById("toll_charge").value = total;
-              ttotal = total + parking_charge + guide_charge + other_charge + trip_charge;
-              document.getElementById("total").value = ttotal;
+              document.getElementById("totaltoll").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newguide + newother;
+              document.getElementById("total").value = ptotal;
               var adv = parseInt(document.getElementById('advance').value) || 0;
-              if (ttotal < adv && adv > ttotal) {
+              if (ptotal < adv && adv > ptotal) {
                 document.getElementById('balance').value = 0;
               }
               else {
-                document.getElementById('balance').value = ttotal - adv;
+                document.getElementById('balance').value = ptotal - adv;
               }
             }
           };
         });
-      });
-      minusBtn.addEventListener("click", function () {
-        const inputs = tollContainer.querySelectorAll("input.form-control");
-        if (inputs.length > 1) {
-          tollContainer.removeChild(inputs[inputs.length - 1]);
-          inputCount--;
 
+        newInput2.addEventListener("click", function () {
+          tollContainer.removeChild(newdiv);
+          inputCount--;
+          console.log(inputCount)
           if (inputCount == 1) {
-            document.getElementById("toll_charge").value = 0;
+            document.getElementById("totaltoll").value = 0;
             total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newother = parseInt(document.getElementById("totalother").value);
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
             var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
             var other_charge = parseFloat(document.getElementById('other').value) || 0;
-            ttotal = total + parking_charge + guide_charge + other_charge + trip_charge;
-            document.getElementById("total").value = ttotal;
+            ptotal = toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newguide + newother;
+            document.getElementById("total").value = ptotal;
             var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ttotal < adv && adv > ttotal) {
+            if (ptotal < adv && adv > ptotal) {
               document.getElementById('balance').value = 0;
             }
             else {
-              document.getElementById('balance').value = ttotal - adv;
+              document.getElementById('balance').value = ptotal - adv;
             }
           }
-        }
-        if (inputCount > 1) {
-          total = 0;
-          var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
-          var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
-          var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
-          var other_charge = parseFloat(document.getElementById('other').value) || 0;
-          for (var j = 1; j < inputCount; j++) {
-            var eid = "toll_charge_" + j;
-            console.log(eid)
-            total = total + parseInt(document.getElementById(eid).value);
-            document.getElementById("toll_charge").value = total;
-            ttotal = total + parking_charge + guide_charge + other_charge + trip_charge;
-            document.getElementById("total").value = ttotal;
-            var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ttotal < adv && adv > ttotal) {
-              document.getElementById('balance').value = 0;
+
+          if (inputCount > 1) {
+            total = 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newother = parseInt(document.getElementById("totalother").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
+            for (var j = 1; j < inputCount; j++) {
+              var eid = "toll_charge_" + j;
+              console.log(eid)
+              total = total + parseInt(document.getElementById(eid).value);
+              document.getElementById("totaltoll").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newguide + newother;
+              document.getElementById("total").value = ptotal;
+              var adv = parseInt(document.getElementById('advance').value) || 0;
+              if (ptotal < adv && adv > ptotal) {
+                document.getElementById('balance').value = 0;
+              }
+              else {
+                document.getElementById('balance').value = ptotal - adv;
+              }
             }
-            else {
-              document.getElementById('balance').value = ttotal - adv;
-            }
-          }
-        };
+          };
+        });
       });
       console.log(inputCount)
     });
@@ -568,102 +633,132 @@
     document.addEventListener("DOMContentLoaded", function () {
       const guideContainer = document.getElementById("guideContainer");
       const plusBtn = document.querySelector(".gplus-btn");
-      const minusBtn = document.querySelector(".gminus-btn");
       let inputCount = 1;
       total = 0;
       plusBtn.addEventListener("click", function () {
+        const newdiv = document.createElement("div");
         const newInput = document.createElement("input");
+        newdiv.classList.add("adddiv")
         newInput.classList.add("form-control");
         newInput.type = "number";
         newInput.placeholder = "Add guide charge";
+        newInput.value = 0;
         newInput.id = "guide_charge_" + inputCount;
         newInput.name = "guide_charge_" + inputCount;
-        const newInput2 = document.createElement("input");
-        newInput2.classList.add("form-control");
-        newInput2.type = "text";
-        newInput2.placeholder = "Add place";
-        newInput2.id = "addplace_" + inputCount;
-        newInput2.name = "addplace_" + inputCount;
-        guideContainer.appendChild(newInput);
-        guideContainer.appendChild(newInput2);
-        console.log(newInput.name)
-        console.log(newInput2.name)
+        console.log(newInput.id)
+        newdiv.appendChild(newInput);
+        const newInput2 = document.createElement("button");
+        newInput2.type = "button";
+        newInput2.textContent = "-";
+        newInput2.classList.add("minusBtn");
+        newInput2.style.border = "none"
+        newInput2.style.borderRadius = "5px"
+        newInput2.style.backgroundColor = "red"
+        newInput2.style.color = "white"
+        newdiv.appendChild(newInput2);
+        newdiv.style.display = "flex";
+        newdiv.style.marginTop = "10px";
+        const newInput3 = document.createElement("input");
+        newInput3.classList.add("form-control");
+        newInput3.placeholder = "Add place";
+        newInput3.type = "text";
+        newInput3.style.width = "95%"
+        newInput3.id = "addplace_" + inputCount;
+        newInput3.name = "addplace_" + inputCount;
+        console.log(newInput3.id)
+        guideContainer.appendChild(newdiv);
+        guideContainer.appendChild(newInput3);
         document.getElementById("count").value = inputCount;
         inputCount++;
 
-        console.log(inputCount)
         document.getElementById(newInput.id).addEventListener('input', function () {
           if (inputCount > 1) {
             total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var newother = parseInt(document.getElementById("totalother").value);
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
             var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
             var other_charge = parseFloat(document.getElementById('other').value) || 0;
             for (var j = 1; j < inputCount; j++) {
-              var val = parseInt(document.getElementById(eid)).value
               var eid = "guide_charge_" + j;
               console.log(eid)
               total = total + parseInt(document.getElementById(eid).value);
-              document.getElementById("guide_charge").value = total;
-              ttotal = total + parking_charge + toll_charge + other_charge + trip_charge;
-              document.getElementById("total").value = ttotal;
+              document.getElementById("totalguide").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newtoll + newother;
+              document.getElementById("total").value = ptotal;
               var adv = parseInt(document.getElementById('advance').value) || 0;
-              if (ttotal < adv && adv > ttotal) {
+              if (ptotal < adv && adv > ptotal) {
                 document.getElementById('balance').value = 0;
               }
               else {
-                document.getElementById('balance').value = ttotal - adv;
+                document.getElementById('balance').value = ptotal - adv;
               }
             }
           };
         });
-      });
-      minusBtn.addEventListener("click", function () {
-        const inputs = guideContainer.querySelectorAll("input.form-control");
-        if (inputs.length > 1) {
-          guideContainer.removeChild(inputs[inputs.length - 1]);
+
+        newInput2.addEventListener("click", function () {
+          guideContainer.removeChild(newdiv);
+          guideContainer.removeChild(newInput3);
+
           inputCount--;
+          console.log(inputCount);
+          document.getElementById("count").value = inputCount - 1;
 
           if (inputCount == 1) {
-            document.getElementById("guide_charge").value = 0;
+            document.getElementById("totalguide").value = 0;
             total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var newother = parseInt(document.getElementById("totalother").value);
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
             var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
             var other_charge = parseFloat(document.getElementById('other').value) || 0;
-            ttotal = total + parking_charge + toll_charge + other_charge + trip_charge;
-            document.getElementById("total").value = ttotal;
+            ptotal = toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newtoll + newother;
+            document.getElementById("total").value = ptotal;
             var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ttotal < adv && adv > ttotal) {
+            if (ptotal < adv && adv > ptotal) {
               document.getElementById('balance').value = 0;
             }
             else {
-              document.getElementById('balance').value = ttotal - adv;
+              document.getElementById('balance').value = ptotal - adv;
             }
           }
-        }
-        if (inputCount > 1) {
-          total = 0;
-          var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
-          var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
-          var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
-          var other_charge = parseFloat(document.getElementById('other').value) || 0;
-          for (var j = 1; j < inputCount; j++) {
-            var eid = "guide_charge_" + j;
-            console.log(eid)
-            total = total + parseInt(document.getElementById(eid).value);
-            document.getElementById("guide_charge").value = total;
-            ttotal = total + parking_charge + toll_charge + other_charge + trip_charge;
-            document.getElementById("total").value = ttotal;
-            var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ttotal < adv && adv > ttotal) {
-              document.getElementById('balance').value = 0;
+
+          if (inputCount > 1) {
+            total = 0;
+
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var newother = parseInt(document.getElementById("totalother").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
+            for (var j = 1; j < inputCount; j++) {
+              var eid = "guide_charge_" + j;
+              console.log(eid)
+              total = total + parseInt(document.getElementById(eid).value);
+              document.getElementById("totalguide").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newtoll + newother;
+              document.getElementById("total").value = ptotal;
+              var adv = parseInt(document.getElementById('advance').value) || 0;
+              if (ptotal < adv && adv > ptotal) {
+                document.getElementById('balance').value = 0;
+              }
+              else {
+                document.getElementById('balance').value = ptotal - adv;
+              }
             }
-            else {
-              document.getElementById('balance').value = ttotal - adv;
-            }
-          }
-        };
+          };
+        });
       });
       console.log(inputCount)
     });
@@ -673,99 +768,119 @@
     document.addEventListener("DOMContentLoaded", function () {
       const otherContainer = document.getElementById("otherContainer");
       const plusBtn = document.querySelector(".oplus-btn");
-      const minusBtn = document.querySelector(".ominus-btn");
       let inputCount = 1;
       total = 0;
       plusBtn.addEventListener("click", function () {
+        const newdiv = document.createElement("div");
         const newInput = document.createElement("input");
+        newdiv.classList.add("adddiv")
         newInput.classList.add("form-control");
         newInput.type = "number";
         newInput.placeholder = "Add other charge";
         newInput.value = 0;
         newInput.id = "other_charge_" + inputCount;
-        otherContainer.appendChild(newInput);
+        newdiv.appendChild(newInput);
+        const newInput2 = document.createElement("button");
+        newInput2.type = "button";
+        newInput2.textContent = "-";
+        newInput2.classList.add("minusBtn");
+        newInput2.style.border = "none"
+        newInput2.style.borderRadius = "5px"
+        newInput2.style.backgroundColor = "red"
+        newInput2.style.color = "white"
+        newdiv.appendChild(newInput2);
+        newdiv.style.display = "flex";
+        newdiv.style.marginTop = "10px";
+        otherContainer.appendChild(newdiv);
         console.log(newInput.id)
         inputCount++;
         console.log(inputCount)
         document.getElementById(newInput.id).addEventListener('input', function () {
           if (inputCount > 1) {
             total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
             var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
             var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
             for (var j = 1; j < inputCount; j++) {
-              var val = parseInt(document.getElementById(eid)).value
               var eid = "other_charge_" + j;
               console.log(eid)
               total = total + parseInt(document.getElementById(eid).value);
-              console.log(total)
-              document.getElementById("other").value = total;
-              ttotal = total + parking_charge + toll_charge + guide_charge + trip_charge;
-              document.getElementById("total").value = ttotal;
+              document.getElementById("totalother").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newguide + newtoll;
+              document.getElementById("total").value = ptotal;
               var adv = parseInt(document.getElementById('advance').value) || 0;
-              if (ttotal < adv && adv > ttotal) {
+              if (ptotal < adv && adv > ptotal) {
                 document.getElementById('balance').value = 0;
               }
               else {
-                document.getElementById('balance').value = ttotal - adv;
+                document.getElementById('balance').value = ptotal - adv;
+              }
+            }
+          };
+        });
+
+        newInput2.addEventListener("click", function () {
+          otherContainer.removeChild(newdiv);
+          inputCount--;
+          console.log(inputCount)
+          if (inputCount == 1) {
+            document.getElementById("totalother").value = 0;
+            total = 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
+            ptotal = toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newguide + newtoll;
+            document.getElementById("total").value = ptotal;
+            var adv = parseInt(document.getElementById('advance').value) || 0;
+            if (ptotal < adv && adv > ptotal) {
+              document.getElementById('balance').value = 0;
+            }
+            else {
+              document.getElementById('balance').value = ptotal - adv;
+            }
+          }
+
+          if (inputCount > 1) {
+            total = 0;
+            var newpark = parseInt(document.getElementById("totalparking").value);
+            var newguide = parseInt(document.getElementById("totalguide").value);
+            var newtoll = parseInt(document.getElementById("totaltoll").value);
+            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
+            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
+            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
+            var other_charge = parseFloat(document.getElementById('other').value) || 0;
+            for (var j = 1; j < inputCount; j++) {
+              var eid = "other_charge_" + j;
+              console.log(eid)
+              total = total + parseInt(document.getElementById(eid).value);
+              document.getElementById("totalother").value = total;
+              ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newpark + newguide + newtoll;
+              document.getElementById("total").value = ptotal;
+              var adv = parseInt(document.getElementById('advance').value) || 0;
+              if (ptotal < adv && adv > ptotal) {
+                document.getElementById('balance').value = 0;
+              }
+              else {
+                document.getElementById('balance').value = ptotal - adv;
               }
             }
           };
         });
       });
-      minusBtn.addEventListener("click", function () {
-        const inputs = otherContainer.querySelectorAll("input.form-control");
-        if (inputs.length > 1) {
-          otherContainer.removeChild(inputs[inputs.length - 1]);
-          inputCount--;
-
-          if (inputCount == 1) {
-            document.getElementById("other").value = 0;
-            total = 0;
-            var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
-            var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
-            var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
-            var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
-            ttotal = total + parking_charge + toll_charge + guide_charge + trip_charge;
-            document.getElementById("total").value = ttotal;
-            var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ttotal < adv && adv > ttotal) {
-              document.getElementById('balance').value = 0;
-            }
-            else {
-              document.getElementById('balance').value = ttotal - adv;
-            }
-          }
-        }
-        if (inputCount > 1) {
-          total = 0;
-
-          var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
-          var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
-          var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
-          var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
-          for (var j = 1; j < inputCount; j++) {
-            var eid = "other_charge_" + j;
-            console.log(eid)
-            total = total + parseInt(document.getElementById(eid).value);
-            document.getElementById("other").value = total;
-            ttotal = total + parking_charge + toll_charge + guide_charge + trip;
-            document.getElementById("total").value = ttotal;
-            var adv = parseInt(document.getElementById('advance').value) || 0;
-            if (ttotal < adv && adv > ttotal) {
-              document.getElementById('balance').value = 0;
-            }
-            else {
-              document.getElementById('balance').value = ttotal - adv;
-            }
-          }
-        };
-      });
       console.log(inputCount)
     });
   </script>
-
 
   <script>
     function validateForm() {
@@ -851,16 +966,20 @@
       var trip_km = isNaN(starting_km) || isNaN(ending_km) ? 0 : ending_km - starting_km;
       document.getElementById('tripkm').value = trip_km;
       total = 0;
-      // var rate = 10; 
-      // if (trip_km > 100) {
-      //   var a = trip_km - 100;
-      //   trip_charge = (a * 15) + 1000;
-      //   var total = trip_charge;
-      // } else {
-      //   var trip_charge = trip_km * rate;
-      //   var total = trip_charge;
-      // }
-      // document.getElementById('kilo').value = trip_charge;
+
+      if (trip_km > 100) {
+        var a = trip_km - 100;
+        trip_charge = (a * after) + hun;
+        var total = trip_charge;
+      }
+      if (trip_km <= 100) {
+        var trip_charge = hun;
+        var total = trip_charge;
+      }
+      if (trip_km == 0) {
+        var total = 0;
+        var trip_charge = 0;
+      }
       var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
       var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
       var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
