@@ -42,6 +42,23 @@ class contact(models.Model):
     review = models.TextField()
 
 class guidemod(models.Model):
+    user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripno = models.TextField(null=True)
     charge = models.TextField(null=True)
     placw = models.TextField(null=True)
+
+class tollcharge(models.Model):
+    user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
+    tripno = models.TextField(null=True)
+    charge = models.TextField(null=True)
+
+class parkingcharge(models.Model):
+    user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
+    tripno = models.TextField(null=True)
+    charge = models.TextField(null=True)
+
+class othercharge(models.Model):
+    user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
+    tripno = models.TextField(null=True)
+    charge = models.TextField(null=True)
+

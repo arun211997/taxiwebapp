@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User,auth
-from app.models import userdata,trip,tripdata,contact,guidemod
+from app.models import userdata,trip,tripdata,contact,guidemod,tollcharge,parkingcharge,othercharge
 from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime
@@ -120,11 +120,23 @@ def startrip(request):
                       parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
                       user_id=userid,other = othercharge)
         data.save()
-        
-        charge = request.POST.get("count")
-        print(charge)
-        if charge:
-            inputcount = int(charge)
+        tollch = tollcharge(tripno=tn,charge=toll,user_id=userid)
+        tollch.save()
+
+        tcount = request.POST.get("tcount")
+        if tcount:
+            inputcount = int(tcount)
+            for x in range(1, inputcount + 1):
+                toll_id = "toll_charge_" + str(x)
+                tcharge = request.POST.get(toll_id)
+                tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
+                tolldata.save()
+
+        gcount = request.POST.get("count")
+        if gcount == "":
+            gcount = 0
+        if gcount > 0:
+            inputcount = int(gcount)
             for x in range(1, inputcount + 1):
                 guide_id = "guide_charge_" + str(x)
                 place_id = "addplace_" + str(x)
@@ -157,7 +169,11 @@ def taxiland(request):
 
 def edit(request,id):
     tripd=tripdata.objects.get(id=id)
-    return render(request,'edit.html',{'trip':tripd})
+    userid= request.session['uid']
+    tn = tripd.tripnumber
+    tolld = tollcharge.objects.filter(user_id=userid ,tripno =tn)
+    context = {'trip':tripd,'toll':tolld}
+    return render(request,'edit.html',context)
 
 def review(request):
     name = request.POST["name"]
@@ -216,11 +232,22 @@ def apply(request,id):
         else:
             tripd.other = 0
             print("no")
+
+        userid= request.session['uid']
+        tcount = request.POST.get("tcount")
+        if tcount:
+            inputcount = int(tcount)
+            for x in range(1, inputcount + 1):
+                toll_id = "toll_charge_" + str(x)
+                tcharge = request.POST.get(toll_id)
+                tn = tripd.tripnumber
+                tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
+                tolldata.save()
         
-        charge = int(request.POST.get("count"))
+        charge = request.POST.get("count")
         print(charge)
-        if charge > 0:
-            inputcount = charge
+        if charge != "":
+            inputcount = int(charge)
             for x in range(1, inputcount + 1):
                 guide_id = "guide_charge_" + str(x)
                 print(guide_id)
@@ -236,6 +263,8 @@ def apply(request,id):
                     guidedata.save()
 
         tripd.save()
+        echarge = request.POST.get("toll")
+        print(echarge)
         return redirect("tripage")
     
 def remarks(request):

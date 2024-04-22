@@ -274,6 +274,7 @@
                                     <span id="parkingError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
                                 <div class="form-group">
+                                    <input type="text" style="display: none;" id="tcount" name="tcount">
                                     <span style="color: #fff; font-weight: bold; font-size: medium;">Toll charge</span>
                                     <input class="form-control" type="number" style="display: none;" id="totaltoll"
                                         name="totaltoll" placeholder="Total charge" value="0">
@@ -283,6 +284,18 @@
                                                 name="toll_charge" placeholder="Toll charge" value="{{trip.toll}}">
                                             <button style="border: none;border-radius: 4px;margin-right: 1px;"
                                                 type="button" class="tplus-btn">+</button>
+                                        </div>
+                                        <div>
+                                            {%for p in toll%}
+                                            <div style="display: flex;justify-content:space-around;margin-top: 2px;">
+                                                <input class="form-control" type="number" id="toll_charge"
+                                                    name="toll_" placeholder="Toll charge"
+                                                    value="{{p.charge}}">
+                                                <button
+                                                    style="border: none;border-radius: 4px;margin-right: 1px; color: #f2f4f6;  background-color: #a53838;"
+                                                    type="button" class="tplus-btn">-</button>
+                                            </div>
+                                            {%endfor%}
                                         </div>
                                     </div>
                                     <div id="tollContainer" style="display: flex;flex-direction: column;">
@@ -554,6 +567,7 @@
                 newInput.placeholder = "Add parking charge";
                 newInput.value = 0;
                 newInput.id = "toll_charge_" + inputCount;
+                newInput.name = "toll_charge_" + inputCount;
                 newdiv.appendChild(newInput);
                 const newInput2 = document.createElement("button");
                 newInput2.type = "button";
@@ -568,6 +582,7 @@
                 newdiv.style.marginTop = "10px";
                 tollContainer.appendChild(newdiv);
                 console.log(newInput.id)
+                document.getElementById("tcount").value = inputCount;
                 inputCount++;
                 console.log(inputCount)
                 document.getElementById(newInput.id).addEventListener('input', function () {
@@ -602,6 +617,7 @@
                 newInput2.addEventListener("click", function () {
                     tollContainer.removeChild(newdiv);
                     inputCount--;
+                    document.getElementById("tcount").value = inputCount - 1;
                     console.log(inputCount)
                     if (inputCount == 1) {
                         document.getElementById("totaltoll").value = 0;
