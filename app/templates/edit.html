@@ -289,7 +289,7 @@
                                             {%for p in toll%}
                                             <div style="display: flex;justify-content:space-around;margin-top: 2px;">
                                                 <input class="form-control" type="number" id="toll_charge"
-                                                    name="toll_" placeholder="Toll charge"
+                                                    name="toll_{{p.id}}" placeholder="Toll charge"
                                                     value="{{p.charge}}">
                                                 <button
                                                     style="border: none;border-radius: 4px;margin-right: 1px; color: #f2f4f6;  background-color: #a53838;"

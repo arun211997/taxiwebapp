@@ -263,8 +263,14 @@ def apply(request,id):
                     guidedata.save()
 
         tripd.save()
-        echarge = request.POST.get("toll")
-        print(echarge)
+        tripd=tripdata.objects.get(id=id)
+        tripno = tripd.tripnumber
+        tolld = tollcharge.objects.filter(tripno = tripno)
+        count=7
+        print(count)
+        for x in range(4, count + 1):
+         echarge = request.POST.get("toll_"+str(x))
+         print(echarge)
         return redirect("tripage")
     
 def remarks(request):
