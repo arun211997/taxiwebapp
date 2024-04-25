@@ -203,6 +203,11 @@ def apply(request,id):
         if toll:
             extratoll = int(request.POST["totaltoll"])
             tripd.toll = int(toll) + extratoll
+            tripno = tripd.tripnumber
+            userid= request.session['uid']
+            tolld = tollcharge(charge=toll,tripno =tripno,user_id=userid)
+            tolld.save()
+
         else:
             tripd.toll = 0
         tripd.tripkm=request.POST["tripkm"]
@@ -235,14 +240,18 @@ def apply(request,id):
 
         userid= request.session['uid']
         tcount = request.POST.get("tcount")
+        print(tcount)
         if tcount:
             inputcount = int(tcount)
             for x in range(1, inputcount + 1):
                 toll_id = "toll_charge_" + str(x)
+                print(toll_id)
                 tcharge = request.POST.get(toll_id)
+                print(tcharge)
                 tn = tripd.tripnumber
                 tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
                 tolldata.save()
+                return redirect("tripage")
         
         charge = request.POST.get("count")
         print(charge)
@@ -262,15 +271,19 @@ def apply(request,id):
                     guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
                     guidedata.save()
 
-        tripd.save()
-        tripd=tripdata.objects.get(id=id)
+       
         tripno = tripd.tripnumber
         tolld = tollcharge.objects.filter(tripno = tripno)
-        count=7
-        print(count)
-        for x in range(4, count + 1):
-         echarge = request.POST.get("toll_"+str(x))
-         print(echarge)
+        id_list = []
+        for toll in tolld:
+          id_list.append(toll.id)
+        # tolld_objects = tollcharge.objects.filter(id__in=id_list)
+        for x in id_list:
+          echarge = request.POST.get("toll_"+str(x))
+          print(echarge)
+          gett = tolld.get(id=x)
+          gett.charge = echarge
+          gett.save()
         return redirect("tripage")
     
 def remarks(request):
