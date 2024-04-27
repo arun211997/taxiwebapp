@@ -291,7 +291,7 @@
                                             {%for p in toll%}
                                             <input type="text" name="tollindex" id="tollindex" value="{{p.id}}" style="display: none;">
                                             <div style="display: flex;justify-content:space-around;margin-top: 2px;">
-                                                <input class="form-control" type="number" id="toll_charge"
+                                                <input class="form-control" type="number" id="tol_{{loop.index}}"
                                                     name="toll_{{p.id}}" placeholder="Toll charge"
                                                     value="{{p.charge}}">
                                                 <button
@@ -677,7 +677,7 @@
         });
     </script>
     <script>
-        const tolltoll = document.getElementById("tollindex");
+        const tolltoll = parseInt(document.getElementById("tol_1").value);
         console.log(tolltoll);
     </script>
 
