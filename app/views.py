@@ -160,8 +160,11 @@ def bill(request,id):
     tripd=tripdata.objects.get(id=id)
     tripno = tripd.tripnumber
     guide=guidemod.objects.filter(tripno=tripno)
+    other =othercharge.objects.filter(tripno=tripno)
+    parking =parkingcharge.objects.filter(tripno=tripno)
+    toll= parkingcharge.objects.filter(tripno=tripno)
     charge = int(tripd.guidecharge)
-    context = {'trip':tripd,'guide':guide ,'charge':charge}
+    context = {'trip':tripd,'guide':guide ,'charge':charge,'other':other}
     return render(request,'bill.html',context)
 
 def taxiland(request):
@@ -172,7 +175,11 @@ def edit(request,id):
     userid= request.session['uid']
     tn = tripd.tripnumber
     tolld = tollcharge.objects.filter(user_id=userid ,tripno =tn)
-    context = {'trip':tripd,'toll':tolld}
+    guide=guidemod.objects.filter(tripno=tn)
+    other =othercharge.objects.filter(tripno=tn)
+    parking =parkingcharge.objects.filter(tripno=tn)
+    toll= tollcharge.objects.filter(tripno=tn)
+    context = {'trip':tripd,'toll':tolld,'tolld':toll,'parking':parking,'other':other,'guide':guide}
     return render(request,'edit.html',context)
 
 def review(request):

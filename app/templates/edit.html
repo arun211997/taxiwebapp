@@ -268,6 +268,19 @@
                                                 type="button" class="plus-btn">+</button>
                                         </div>
                                     </div>
+                                    <div>
+                                        {%for p in parking%}
+                                        <input type="text" name="tollindex" id="tollindex" value="{{p.id}}"
+                                            style="display: none;">
+                                        <div style="display: flex;justify-content:space-around;margin-top: 2px;">
+                                            <input class="form-control" type="number" id="tol_{{loop.index}}"
+                                                name="toll_{{p.id}}" placeholder="Toll charge" value="{{p.charge}}">
+                                            <button
+                                                style="border: none;border-radius: 4px;margin-right: 1px; color: #f2f4f6;  background-color: #a53838;"
+                                                type="button" class="tplus-btn">-</button>
+                                        </div>
+                                        {%endfor%}
+                                    </div>
                                     <div id="parkingContainer" style="display: flex;flex-direction: column;">
 
                                     </div>
@@ -280,20 +293,20 @@
                                         name="totaltoll" placeholder="Total charge" value="0">
                                     <div id="tolling" style="display: flex;flex-direction: column;">
                                         <div style="display: flex;justify-content:space-around;">
-                                           
+
                                             <input class="form-control" type="number" id="toll_charge"
                                                 name="toll_charge" placeholder="Toll charge" value="">
-                                          
+
                                             <button style="border: none;border-radius: 4px;margin-right: 1px;"
                                                 type="button" class="tplus-btn">+</button>
                                         </div>
                                         <div>
                                             {%for p in toll%}
-                                            <input type="text" name="tollindex" id="tollindex" value="{{p.id}}" style="display: none;">
+                                            <input type="text" name="tollindex" id="tollindex" value="{{p.id}}"
+                                                style="display: none;">
                                             <div style="display: flex;justify-content:space-around;margin-top: 2px;">
                                                 <input class="form-control" type="number" id="tol_{{loop.index}}"
-                                                    name="toll_{{p.id}}" placeholder="Toll charge"
-                                                    value="{{p.charge}}">
+                                                    name="toll_{{p.id}}" placeholder="Toll charge" value="{{p.charge}}">
                                                 <button
                                                     style="border: none;border-radius: 4px;margin-right: 1px; color: #f2f4f6;  background-color: #a53838;"
                                                     type="button" class="tplus-btn">-</button>
@@ -320,6 +333,19 @@
                                                 type="button" class="gplus-btn">+</button>
                                         </div>
                                     </div>
+                                    <div>
+                                        {%for p in guide%}
+                                        <input type="text" name="tollindex" id="tollindex" value="{{p.id}}"
+                                            style="display: none;">
+                                        <div style="display: flex;justify-content:space-around;margin-top: 2px;">
+                                            <input class="form-control" type="number" id="tol_{{loop.index}}"
+                                                name="toll_{{p.id}}" placeholder="Toll charge" value="{{p.charge}}">
+                                            <button
+                                                style="border: none;border-radius: 4px;margin-right: 1px; color: #f2f4f6;  background-color: #a53838;"
+                                                type="button" class="tplus-btn">-</button>
+                                        </div>
+                                        {%endfor%}
+                                    </div>
                                     <div id="guideContainer" style="display: flex;flex-direction: column;">
 
                                     </div>
@@ -339,6 +365,19 @@
                                         <div id="otherContainer" style="display: flex;flex-direction: column;">
 
                                         </div>
+                                    </div>
+                                    <div>
+                                        {%for p in other%}
+                                        <input type="text" name="tollindex" id="tollindex" value="{{p.id}}"
+                                            style="display: none;">
+                                        <div style="display: flex;justify-content:space-around;margin-top: 2px;">
+                                            <input class="form-control" type="number" id="tol_{{loop.index}}"
+                                                name="toll_{{p.id}}" placeholder="Toll charge" value="{{p.charge}}">
+                                            <button
+                                                style="border: none;border-radius: 4px;margin-right: 1px; color: #f2f4f6;  background-color: #a53838;"
+                                                type="button" class="tplus-btn">-</button>
+                                        </div>
+                                        {%endfor%}
                                     </div>
                                     <span id="otherError" class="error" style="color: #ffdbdb;"></span>
                                 </div>
