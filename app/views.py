@@ -131,6 +131,15 @@ def startrip(request):
                 tcharge = request.POST.get(toll_id)
                 tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
                 tolldata.save()
+        
+        pcount = request.POST.get("pcount")
+        if pcount:
+            inputcount = int(pcount)
+            for x in range(1, inputcount + 1):
+                parking_id = "parking_charge_" + str(x)
+                parking_charge = request.POST.get(parking_id)
+                parkdata = parkingcharge(charge=parking_charge,tripno=tn,user_id=userid)
+                parkdata.save()
 
         gcount = request.POST.get("count")
         if gcount == "":
@@ -200,10 +209,18 @@ def apply(request,id):
         tripd.huncharge = request.POST["hun"]
         tripd.extra = request.POST["after"]
         parking = request.POST["parking_charge"]
+       
         tripd.vehiclenumber = request.POST["vnumber"]
         if parking:
-            extrapark = int(request.POST["totalparking"])
-            tripd.parking = int(parking) + extrapark
+                extrapark = int(request.POST["totalparking"])
+                tripd.parking = int(parking) + extrapark
+                extrapark = int(request.POST["totalparking"])
+                tripd.parking = int(parking) + extrapark          
+                tripno = tripd.tripnumber
+                userid= request.session['uid']
+                print(parking)
+                park = parkingcharge(charge=parking,tripno = tripno,user_id=userid)
+                park.save()
         else:
             tripd.parking = 0
         toll = request.POST["toll_charge"]
@@ -214,9 +231,9 @@ def apply(request,id):
             userid= request.session['uid']
             tolld = tollcharge(charge=toll,tripno =tripno,user_id=userid)
             tolld.save()
-
         else:
             tripd.toll = 0
+
         tripd.tripkm=request.POST["tripkm"]
         tripd.total=request.POST["total"]
         advance = request.POST["advance"]
@@ -252,13 +269,25 @@ def apply(request,id):
             inputcount = int(tcount)
             for x in range(1, inputcount + 1):
                 toll_id = "toll_charge_" + str(x)
-                print(toll_id)
                 tcharge = request.POST.get(toll_id)
-                print(tcharge)
                 tn = tripd.tripnumber
                 tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
                 tolldata.save()
                 return redirect("tripage")
+            
+        pcount = request.POST.get("pcount")
+        print(pcount)
+        if pcount:
+            inputcount = int(pcount)
+            for x in range(1, inputcount + 1):
+                parking_id = "parking_charge_" + str(x)
+                print(parking_id)
+                parking_charge = request.POST.get(parking_id)
+                print(parking_charge)
+                tn = tripd.tripnumber
+                parkdata = parkingcharge(charge=parking_charge,tripno=tn,user_id=userid)
+                parkdata.save()
+
         
         charge = request.POST.get("count")
         print(charge)
@@ -266,13 +295,13 @@ def apply(request,id):
             inputcount = int(charge)
             for x in range(1, inputcount + 1):
                 guide_id = "guide_charge_" + str(x)
-                print(guide_id)
+               
                 place_id = "addplace_" + str(x)
-                print(place_id)
+               
                 gcharge = request.POST.get(guide_id)
-                print(gcharge)
+               
                 gplace = request.POST.get(place_id)
-                print(gplace)
+                
                 tn = tripd.tripnumber
                 if gcharge:
                     guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
@@ -281,16 +310,25 @@ def apply(request,id):
        
         tripno = tripd.tripnumber
         tolld = tollcharge.objects.filter(tripno = tripno)
+        parkd = parkingcharge.objects.filter(tripno = tripno)
         id_list = []
+        park_list = []
         for toll in tolld:
           id_list.append(toll.id)
-        # tolld_objects = tollcharge.objects.filter(id__in=id_list)
         for x in id_list:
           echarge = request.POST.get("toll_"+str(x))
-          print(echarge)
           gett = tolld.get(id=x)
           gett.charge = echarge
           gett.save()
+
+        for park in parkd:
+            park_list.append(park.id)
+        for x in park_list:
+            pcharge = request.POST.get("parking_charge_"+str(x))
+            getp = parkd.get(id=x)
+            getp.charge = pcharge
+            getp.save()
+
         return redirect("tripage")
     
 def remarks(request):
