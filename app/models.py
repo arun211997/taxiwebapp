@@ -50,15 +50,15 @@ class guidemod(models.Model):
 class tollcharge(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripno = models.TextField(null=True)
-    charge = models.TextField(null=True)
+    tcharge = models.TextField(null=True)
 
 class parkingcharge(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripno = models.TextField(null=True)
-    charge = models.TextField(null=True)
+    pcharge = models.TextField()
 
 class othercharge(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripno = models.TextField(null=True)
-    charge = models.TextField(null=True)
+    ocharge = models.TextField(default=0)
 

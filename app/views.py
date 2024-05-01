@@ -219,17 +219,18 @@ def apply(request,id):
                 tripno = tripd.tripnumber
                 userid= request.session['uid']
                 print(parking)
-                park = parkingcharge(charge=parking,tripno = tripno,user_id=userid)
-                park.save()
+                parkli = parkingcharge(pcharge=parking,tripno = tripno,user_id=userid)
+                parkli.save()
         else:
             tripd.parking = 0
+
         toll = request.POST["toll_charge"]
         if toll:
             extratoll = int(request.POST["totaltoll"])
             tripd.toll = int(toll) + extratoll
             tripno = tripd.tripnumber
             userid= request.session['uid']
-            tolld = tollcharge(charge=toll,tripno =tripno,user_id=userid)
+            tolld = tollcharge(tcharge=toll,tripno =tripno,user_id=userid)
             tolld.save()
         else:
             tripd.toll = 0
