@@ -57,7 +57,7 @@ class parkingcharge(models.Model):
     tripno = models.TextField(null=True)
     pcharge = models.TextField()
 
-class othercharge(models.Model):
+class othercharges(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripno = models.TextField(null=True)
     ocharge = models.TextField(default=0)
