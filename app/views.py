@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User,auth
-from app.models import userdata,trip,tripdata,contact,guidemod,tollcharge,parkingcharge,othercharges
+from app.models import userdata,trip,tripdata,contact,guidemod,tollcharge,othercharges,parkingcharges
 from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime
@@ -138,7 +138,7 @@ def startrip(request):
             for x in range(1, inputcount + 1):
                 parking_id = "parking_charge_" + str(x)
                 parking_charge = request.POST.get(parking_id)
-                parkdata = parkingcharge(charge=parking_charge,tripno=tn,user_id=userid)
+                parkdata = parkingcharges(charge=parking_charge,tripno=tn,user_id=userid)
                 parkdata.save()
 
         gcount = request.POST.get("count")
@@ -170,8 +170,8 @@ def bill(request,id):
     tripno = tripd.tripnumber
     guide=guidemod.objects.filter(tripno=tripno)
     other =othercharges.objects.filter(tripno=tripno)
-    parking =parkingcharge.objects.filter(tripno=tripno)
-    toll= parkingcharge.objects.filter(tripno=tripno)
+    parking =parkingcharges.objects.filter(tripno=tripno)
+    toll= parkingcharges.objects.filter(tripno=tripno)
     charge = int(tripd.guidecharge)
     context = {'trip':tripd,'guide':guide ,'charge':charge,'other':other}
     return render(request,'bill.html',context)
@@ -186,7 +186,7 @@ def edit(request,id):
     tolld = tollcharge.objects.filter(user_id=userid ,tripno =tn)
     guide=guidemod.objects.filter(tripno=tn)
     other =othercharges.objects.filter(tripno=tn)
-    parking =parkingcharge.objects.filter(tripno=tn)
+    parking =parkingcharges.objects.filter(tripno=tn)
     toll= tollcharge.objects.filter(tripno=tn)
     context = {'trip':tripd,'toll':tolld,'tolld':toll,'parking':parking,'other':other,'guide':guide}
     return render(request,'edit.html',context)
@@ -215,7 +215,7 @@ def apply(request,id):
                 tripno = tripd.tripnumber
                 userid= request.session['uid']
                 print(parking)
-                parkli = parkingcharge(pcharge=parking,tripno = tripno,user_id=userid)
+                parkli = parkingcharges(park=parking,tripno = tripno,user_id=userid)
                 parkli.save()
         else:
             tripd.parking = 0
@@ -226,7 +226,7 @@ def apply(request,id):
             tripd.toll = int(toll) + extratoll
             tripno = tripd.tripnumber
             userid= request.session['uid']
-            tolld = tollcharge(tcharge=toll,tripno =tripno,user_id=userid)
+            tolld = tollcharge(toll=toll,tripno =tripno,user_id=userid)
             tolld.save()
         else:
             tripd.toll = 0
@@ -293,7 +293,7 @@ def apply(request,id):
                 parking_charge = request.POST.get(parking_id)
                 print(parking_charge)
                 tn = tripd.tripnumber
-                parkdata = parkingcharge(charge=parking_charge,tripno=tn,user_id=userid)
+                parkdata = parkingcharges(zcharge=parking_charge,tripno=tn,user_id=userid)
                 parkdata.save()
         
         ocount = request.POST.get("ocount")
@@ -330,7 +330,7 @@ def apply(request,id):
        
         tripno = tripd.tripnumber
         tolld = tollcharge.objects.filter(tripno = tripno)
-        parkd = parkingcharge.objects.filter(tripno = tripno)
+        parkd = parkingcharges.objects.filter(tripno = tripno)
         id_list = []
         park_list = []
         for toll in tolld:
@@ -346,28 +346,27 @@ def apply(request,id):
         for x in park_list:
             pcharge = request.POST.get("parking_charge_"+str(x))
             getp = parkd.get(id=x)
-            getp.pcharge = pcharge
+            getp.zcharge = pcharge
             getp.save()
         
-        tripno = tripd.tripnumber
-        tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
-        parkd = parkingcharge.objects.filter(tripno = tripno, user_id =userid)
-        ttotal = 0
-        ptotal = 0
+        # tripno = tripd.tripnumber
+        # tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
+        # parkd = parkingcharges.objects.filter(tripno = tripno, user_id =userid)
+        # ttotal = 0
+        # ptotal = 0
 
-        for p in tolld:
-            print(p.tcharge)
-            tcharge = int(p.tcharge)
-            ttotal+=tcharge
-        tripd.toll = ttotal
-        tripd.save()
+        # for p in tolld:
+        #     print(p.tcharge)
+        #     tcharge = int(p.tcharge)
+        #     ttotal+=tcharge
+        # tripd.toll = ttotal
+        # tripd.save()
         
-        if parkd:
-            for p in parkd:
-                pcharge = int(p.pcharge)
-                ptotal+=pcharge
-            tripd.parking = ptotal
-            tripd.save()
+        # for p in parkd:
+        #     pcharge = int(p.zcharge)
+        #     ptotal+=pcharge
+        # tripd.parking = ptotal
+        # tripd.save()
 
         
         return redirect("tripage")
