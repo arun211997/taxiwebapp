@@ -349,24 +349,23 @@ def apply(request,id):
             getp.zcharge = pcharge
             getp.save()
         
-        # tripno = tripd.tripnumber
-        # tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
-        # parkd = parkingcharges.objects.filter(tripno = tripno, user_id =userid)
-        # ttotal = 0
-        # ptotal = 0
+        tripno = tripd.tripnumber
+        tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
+        parkd = parkingcharges.objects.filter(tripno = tripno, user_id =userid)
+        ttotal = 0
+        ptotal = 0
 
-        # for p in tolld:
-        #     print(p.tcharge)
-        #     tcharge = int(p.tcharge)
-        #     ttotal+=tcharge
-        # tripd.toll = ttotal
-        # tripd.save()
+        for p in tolld:
+            tcharge = int(p.toll)
+            ttotal+=tcharge
+        tripd.toll = ttotal
+        tripd.save()
         
-        # for p in parkd:
-        #     pcharge = int(p.zcharge)
-        #     ptotal+=pcharge
-        # tripd.parking = ptotal
-        # tripd.save()
+        for p in parkd:
+            pcharge = int(p.park)
+            ptotal+=pcharge
+        tripd.parking = ptotal
+        tripd.save()
 
         
         return redirect("tripage")
