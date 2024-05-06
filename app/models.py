@@ -44,8 +44,8 @@ class contact(models.Model):
 class guidemod(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
     tripno = models.TextField(null=True)
-    charge = models.TextField(null=True)
-    placw = models.TextField(null=True)
+    guidecharge = models.TextField(null=True)
+    place = models.TextField(null=True)
 
 class tollcharge(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
@@ -54,8 +54,8 @@ class tollcharge(models.Model):
 
 class parkingcharges(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)
-    tripno = models.TextField(null=True)
-    park = models.TextField(null=True)
+    tripno = models.TextField()
+    park = models.TextField()
 
 class othercharges(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,null=True)

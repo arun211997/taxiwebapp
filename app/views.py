@@ -208,22 +208,22 @@ def apply(request,id):
         tripd.endkm  = request.POST["ending_km"]
         tripd.huncharge = request.POST["hun"]
         tripd.extra = request.POST["after"]
-        parking = request.POST["parking_charge"]
+        parking = request.POST.get("parking_charge")
        
         tripd.vehiclenumber = request.POST["vnumber"]
         if parking: 
                 tripno = tripd.tripnumber
                 userid= request.session['uid']
                 print(parking)
-                parkli = parkingcharges(park=parking,tripno = tripno,user_id=userid)
+                parkli = parkingcharges(tripno = tripno,user_id=userid,park=str(parking))
                 parkli.save()
         else:
             tripd.parking = 0
 
         toll = request.POST["toll_charge"]
         if toll:
-            extratoll = int(request.POST["totaltoll"])
-            tripd.toll = int(toll) + extratoll
+            # extratoll = int(request.POST["totaltoll"])
+            # tripd.toll = int(toll) + extratoll
             tripno = tripd.tripnumber
             userid= request.session['uid']
             tolld = tollcharge(toll=toll,tripno =tripno,user_id=userid)
@@ -233,8 +233,8 @@ def apply(request,id):
 
         other = request.POST["other"]
         if other:
-            extraother = int(request.POST["totalother"])
-            tripd.other = int(other) + extraother
+            # extraother = int(request.POST["totalother"])
+            # tripd.other = int(other) + extraother
             tripno = tripd.tripnumber
             userid= request.session['uid']
             otherd = othercharges(ocharge=other,tripno =tripno,user_id=userid)
@@ -255,13 +255,21 @@ def apply(request,id):
         else:
             tripd.balance=0
         tripd.tripcharge=request.POST["kilo"]
+
         guide = request.POST["guide_charge"]
+        guide_place = request.POST["guide_place"]
         if guide:
-          extraguide = int(request.POST["totalguide"])
-          tripd.guidecharge = int(guide) + extraguide
+        #   extraguide = int(request.POST["totalguide"])
+        #   tripd.guidecharge = int(guide) + extraguide
+            tripno = tripd.tripnumber
+            userid= request.session['uid']
+            print(guide)
+            print(guide_place)
+            guided = guidemod(guidecharge=guide,tripno =tripno,user_id=userid,place=guide_place)
+            guided.save()
         else:
             tripd.guidecharge = 0
-        tripd.save()
+
         othercharge = request.POST["other"]
         if othercharge:
             extraother = int(request.POST["totalother"])
@@ -279,7 +287,7 @@ def apply(request,id):
                 toll_id = "toll_charge_" + str(x)
                 tcharge = request.POST.get(toll_id)
                 tn = tripd.tripnumber
-                tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
+                tolldata = tollcharge(toll=tcharge,tripno=tn,user_id=userid)
                 tolldata.save()
                 return redirect("tripage")
             
@@ -293,7 +301,7 @@ def apply(request,id):
                 parking_charge = request.POST.get(parking_id)
                 print(parking_charge)
                 tn = tripd.tripnumber
-                parkdata = parkingcharges(zcharge=parking_charge,tripno=tn,user_id=userid)
+                parkdata = parkingcharges(park=parking_charge,tripno=tn,user_id=userid)
                 parkdata.save()
         
         ocount = request.POST.get("ocount")
@@ -324,21 +332,24 @@ def apply(request,id):
                 
                 tn = tripd.tripnumber
                 if gcharge:
-                    guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
+                    guidedata = guidemod(guidecharge=gcharge, place=gplace, tripno=tn , user_id =userid)
                     guidedata.save()
 
        
         tripno = tripd.tripnumber
         tolld = tollcharge.objects.filter(tripno = tripno)
         parkd = parkingcharges.objects.filter(tripno = tripno)
+        guidedata = guidemod.objects.filter(tripno=tripno)
         id_list = []
         park_list = []
+        guide_list =[]
+
         for toll in tolld:
           id_list.append(toll.id)
         for x in id_list:
           echarge = request.POST.get("toll_"+str(x))
           gett = tolld.get(id=x)
-          gett.tcharge = echarge
+          gett.toll = echarge
           gett.save()
 
         for park in parkd:
@@ -346,8 +357,18 @@ def apply(request,id):
         for x in park_list:
             pcharge = request.POST.get("parking_charge_"+str(x))
             getp = parkd.get(id=x)
-            getp.zcharge = pcharge
+            getp.park = pcharge
             getp.save()
+
+        for guide in guidedata:
+            guide_list.append(guide.id)
+        for x in guide_list:
+            gcharge = request.POST.get("guide_"+str(x))
+            gplace = request.POST.get("place_"+str(x))
+            getg = guidedata.get(id=x)
+            getg.guidecharge = gcharge
+            getg.place = gplace
+            getg.save()
         
         tripno = tripd.tripnumber
         tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
@@ -355,17 +376,17 @@ def apply(request,id):
         ttotal = 0
         ptotal = 0
 
-        for p in tolld:
-            tcharge = int(p.toll)
-            ttotal+=tcharge
-        tripd.toll = ttotal
-        tripd.save()
+        # for p in tolld:
+        #     tcharge = int(p.toll)
+        #     ttotal+=tcharge
+        # tripd.toll = ttotal
+        # tripd.save()
         
-        for p in parkd:
-            pcharge = int(p.park)
-            ptotal+=pcharge
-        tripd.parking = ptotal
-        tripd.save()
+        # for p in parkd:
+        #     pcharge = int(p.park)
+        #     ptotal+=pcharge
+        # tripd.parking = ptotal
+        # tripd.save()
 
         
         return redirect("tripage")
