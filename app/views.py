@@ -220,7 +220,7 @@ def apply(request,id):
         else:
             tripd.parking = 0
 
-        toll = request.POST["toll_charge"]
+        toll = request.POST.get("toll_charge")
         if toll:
             # extratoll = int(request.POST["totaltoll"])
             # tripd.toll = int(toll) + extratoll
@@ -340,9 +340,11 @@ def apply(request,id):
         tolld = tollcharge.objects.filter(tripno = tripno)
         parkd = parkingcharges.objects.filter(tripno = tripno)
         guidedata = guidemod.objects.filter(tripno=tripno)
+        otherdata = othercharges.objects.filter(tripno = tripno)
         id_list = []
         park_list = []
         guide_list =[]
+        other_list =[]
 
         for toll in tolld:
           id_list.append(toll.id)
@@ -369,6 +371,14 @@ def apply(request,id):
             getg.guidecharge = gcharge
             getg.place = gplace
             getg.save()
+
+        for other in otherdata:
+            other_list.append(other.id)
+        for x in other_list:
+            ocharge = request.POST.get("other_"+str(x))
+            geto = otherdata.get(id=x)
+            geto.ocharge = ocharge
+            geto.save()
         
         tripno = tripd.tripnumber
         tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
