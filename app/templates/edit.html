@@ -257,8 +257,10 @@
                                     <input type="text" style="display: none;" id="pcount" name="pcount">
                                     <span style="color: #fff; font-weight: bold; font-size: medium;">Parking
                                         charge</span><br>
-                                    <input class="form-control" type="number" style="display: none;" id="totalparking"
-                                        name="totalparking" placeholder="Total charge" value="0">
+                                    <input class="form-control" type="number" style="display: block;" id="totalparking"
+                                        name="totalparking" placeholder="Total charge" value="">
+                                    <input class="form-control" type="number" style="display: block;" id="addpark"
+                                        name="totalparking" placeholder="Total charge" value="">
                                     <span id="parkingError" class="error" style="color: #ffdbdb;"></span>
                                     <div id="parking" style="display: flex;flex-direction: column;">
                                         <div style="display: flex;justify-content:space-around;">
@@ -272,7 +274,6 @@
                                         <input type="text" name="tollindex" id="tollpark" value="0"
                                             style="display: block;">
                                         {%for p in parking%}
-
                                         <div style="display: flex;justify-content:space-around;margin-top: 2px;">
                                             <input class="form-control toll-input" type="number" name="toll_{{p.id}}"
                                                 placeholder="Toll charge" value="{{p.park}}">
@@ -495,7 +496,6 @@
                 newInput.classList.add("form-control");
                 newInput.type = "number";
                 newInput.placeholder = "Add parking charge";
-                newInput.value = 0;
                 newInput.id = "parking_charge_" + inputCount;
                 newInput.name = "parking_charge_" + inputCount;
                 newdiv.appendChild(newInput);
@@ -518,6 +518,7 @@
                 document.getElementById(newInput.id).addEventListener('input', function () {
                     if (inputCount > 1) {
                         total = 0;
+                        
                         var newtoll = parseInt(document.getElementById("totaltoll").value);
                         var newguide = parseInt(document.getElementById("totalguide").value);
                         var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
@@ -526,13 +527,16 @@
                         var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
                         var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
                         var other_charge = parseFloat(document.getElementById('other_charge').value) || 0;
+                        var oldpark = parseInt(document.getElementById("tollpark").value) || 0;
                         for (var j = 1; j < inputCount; j++) {
                             var eid = "parking_charge_" + j;
                             console.log(eid)
                             total = total + parseInt(document.getElementById(eid).value);
                             console.log(total)
-                            document.getElementById("totalparking").value = total;
-                            ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newtoll + newguide + newother;
+                            document.getElementById("addpark").value = total;
+                            document.getElementById("totalparking").value = total + oldpark + parking_charge;
+                            var newpark = parseInt(document.getElementById("totalparking").value);
+                            ptotal = newpark + parking_charge;
                             document.getElementById("total").value = ptotal;
                             var adv = parseInt(document.getElementById('advance').value) || 0;
                             if (ptotal < adv && adv > ptotal) {
@@ -548,10 +552,9 @@
                 newInput2.addEventListener("click", function () {
                     parkingContainer.removeChild(newdiv);
                     inputCount--;
-
                     console.log(inputCount)
                     if (inputCount == 1) {
-                        document.getElementById("totalparking").value = 0;
+                        
                         total = 0;
                         var newtoll = parseInt(document.getElementById("totaltoll").value);
                         var newguide = parseInt(document.getElementById("totalguide").value);
@@ -560,8 +563,11 @@
                         var trip_charge = parseFloat(document.getElementById('kilo').value) || 0;
                         var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
                         var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
-                        var other_charge = parseFloat(document.getElementById('other').value) || 0;
-                        ptotal = toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newtoll + newguide + newother;
+                        var other_charge = parseFloat(document.getElementById('other_charge').value) || 0;
+                        var oldpark = parseInt(document.getElementById("tollpark").value) || 0;
+                        document.getElementById("totalparking").value = oldpark + parking_charge;
+                        document.getElementById("addpark").value = 0;
+                        ptotal = oldpark + parking_charge;
                         document.getElementById("total").value = ptotal;
                         var adv = parseInt(document.getElementById('advance').value) || 0;
                         if (ptotal < adv && adv > ptotal) {
@@ -582,13 +588,14 @@
                         var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
                         var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
                         var other_charge = parseFloat(document.getElementById('other_charge').value) || 0;
+                        var oldpark = parseInt(document.getElementById("tollpark").value) || 0;
                         for (var j = 1; j < inputCount; j++) {
                             var eid = "parking_charge_" + j;
                             console.log(eid)
-                            total = total + parseInt(document.getElementById(eid).value) + parseInt(document.getElementById("tollpark").value) ;
+                            total = total + parseInt(document.getElementById(eid).value);
                             const ver = parseInt(document.getElementById("tollpark").value)
                             console.log(ver)
-                            document.getElementById("totalparking").value = total;
+                            document.getElementById("totalparking").value = total + oldpark;
                             ptotal = total + toll_charge + guide_charge + other_charge + trip_charge + parking_charge + newtoll + newguide + newother;
                             document.getElementById("total").value = ptotal;
                             var adv = parseInt(document.getElementById('advance').value) || 0;
@@ -608,23 +615,23 @@
 
 
     <script>
-        // Get all input elements with class 'toll-input'
-        const tollInputs = document.querySelectorAll('.toll-input');
-
-
+        const tollInputs = document.querySelectorAll('.toll-input')
         tollInputs.forEach(input => {
             let total = 0;
             tollInputs.forEach(input => {
-                total += parseInt(input.value) || 0; 
+                total += parseInt(input.value) || 0;
                 document.getElementById("tollpark").value = total
-                // Convert input value to integer or default to 0
             });
             input.addEventListener('input', () => {
+                tpark = parseInt(document.getElementById("addpark").value)||0;
                 let total = 0;
                 tollInputs.forEach(input => {
                     total += parseInt(input.value) || 0; // Convert input value to integer or default to 0
                 });
                 document.getElementById("tollpark").value = total
+                document.getElementById("totalparking").value = total + tpark;
+                var newpark = document.getElementById("totalparking").value;
+                document.getElementById("total").value = newpark;
             });
         });
 
@@ -899,7 +906,7 @@
                 newInput.classList.add("form-control");
                 newInput.type = "number";
                 newInput.placeholder = "Add other charge";
-                newInput.value = 0;
+                newInput.value = "";
                 newInput.id = "other_charge_" + inputCount;
                 newInput.name = "other_charge_" + inputCount;
                 newdiv.appendChild(newInput);
@@ -923,6 +930,7 @@
                     if (inputCount > 1) {
                         total = 0;
                         var newpark = parseInt(document.getElementById("totalparking").value);
+                        console.log(newpark)
                         var newguide = parseInt(document.getElementById("totalguide").value);
                         var newtoll = parseInt(document.getElementById("totaltoll").value);
                         var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
@@ -1114,6 +1122,8 @@
             }
             document.getElementById('kilo').value = trip_charge;
             var parking_charge = parseFloat(document.getElementById('parking_charge').value) || 0;
+            var oldpark = parseFloat(document.getElementById('oldpark').value) || 0;
+            parseFloat(document.getElementById('totalparking').value) = parking_charge + oldpark;
             var toll_charge = parseFloat(document.getElementById('toll_charge').value) || 0;
             var guide_charge = parseFloat(document.getElementById('guide_charge').value) || 0;
             var other_charge = parseFloat(document.getElementById('other_charge').value) || 0;
