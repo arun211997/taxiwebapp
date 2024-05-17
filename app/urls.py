@@ -17,4 +17,8 @@ urlpatterns = [
      path('apply/<int:id>',views.apply,name='apply'),
      path('review',views.review,name='review'),
      path('remarks',views.remarks,name='remarks'),
+     path('delete/<int:id>',views.delete,name='delete'),
+     path('pdelete/<int:id>',views.pdelete,name='pdelete'),
+     path('tdelete/<int:id>',views.tdelete,name='tdelete'),
+     path('odelete/<int:id>',views.odelete,name='odelete'),
 ]    

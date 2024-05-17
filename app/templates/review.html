@@ -46,16 +46,21 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'remarks'%}"
-                          style="color: rgb(222, 228, 233); font-weight: bold; font-size: medium; outline: none; border: none;margin-left: 5px;">Remarks</a>
-                      </li>
+                            style="color: rgb(222, 228, 233); font-weight: bold; font-size: medium; outline: none; border: none;margin-left: 5px;">Remarks</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container" style="margin-top: 100px;">
+        <center>
+            <h4>Remarks</h1>
+        </center>
+
         {% for p in review %}
-        <div class="row" style="background-color: #0056b3; color: #fff; font-size: medium;padding-top: 5px;padding-bottom: 5px;justify-content: space-between;">
+        <div class="row"
+            style="background-color: #0056b3; color: #fff; font-size: medium;padding-top: 5px;padding-bottom: 5px;justify-content: space-between;">
             <div class="col-md-5">
                 <span style="font-weight: bold;">{{ p.name }}</span>
             </div>
@@ -63,7 +68,8 @@
                 <span>Ph : {{ p.phone }}</span>
             </div>
         </div>
-        <div class="row" style="background-color: #ffffff; color: #111010; font-size: medium;border-style: solid;border-top:0;border-width: 0.5px;height: max-content;">
+        <div class="row"
+            style="background-color: #ffffff; color: #111010; font-size: medium;border-style: solid;border-top:0;border-width: 0.5px;height: max-content;">
             <div class="col-md-12" style="justify-content: center;display: flex;">
                 <span> {{ p.review }}</span>
             </div>

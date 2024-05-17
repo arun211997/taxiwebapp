@@ -88,40 +88,55 @@ def startrip(request):
         ep = request.POST.get("endplace")
         vname = request.POST.get("vehiclename")
         vnumber = request.POST.get("vnumber")
-        parking = request.POST.get("parking_charge")
-        if parking == "":
-            parking=0
+
+        totalpark = request.POST["totalpark"]
+        totaltoll = request.POST.get("totaltoll")
+        totalguide = request.POST.get("totalguide")
+        totalother = request.POST.get("totalother")
+       
+        parkingc = request.POST.get("parking_charge")
+        if parkingc: 
+                tripno = tn
+                userid= request.session['uid']
+                print(parkingc)
+                pchange = parkingcharges(tripno = tripno,user_id = userid,park = parkingc)
+                pchange.save()
+
         toll = request.POST.get("toll_charge")
-        if toll == "":
-            toll=0
+        if toll:
+            tripno = tn
+            userid= request.session['uid']
+            tolld = tollcharge(toll=toll,tripno =tripno,user_id=userid)
+            tolld.save()
+
+        guide = request.POST["guide_charge"]
+        guide_place = request.POST["guide_place"]
+        if guide:
+            tripno = tn
+            userid= request.session['uid']
+            guided = guidemod(guidecharge=guide,tripno =tripno,user_id=userid,place=guide_place)
+            guided.save()
+
+        other = request.POST.get("other")
+        if other:
+            tripno = tn
+            userid= request.session['uid']
+            otherd = othercharges(ocharge=other,tripno =tripno,user_id=userid)
+            otherd.save()
+
         tripkm = request.POST.get("tripkm")
         if tripkm == "":
             tripkm=0
         total = request.POST.get("total")
-        print(total)
         advance = request.POST.get("advance")
+
         if advance == "":
             advance=0
         balance = request.POST.get("balance")
         tripcharge = 0
-        guidecharge = request.POST.get("guide_charge")
-        if guidecharge == "":
-            guidecharge=0
-        othercharge = request.POST.get("other")
-        if othercharge == "":
-            othercharge=0
         hun=request.POST.get("hun")
         after=request.POST.get("after")
-       
         userid= request.session['uid']
-    
-        data=tripdata(tripnumber=tn,drivername=dn,guestname=gn,startkm=sk,start=sp,fromdate=fd,todate=ed,
-                      endkm=ek,end=ep,vehiclename=vname,vehiclenumber=vnumber,tripcharge=tripcharge,guidecharge=guidecharge,
-                      parking=parking,toll=toll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
-                      user_id=userid,other = othercharge)
-        data.save()
-        tollch = tollcharge(tripno=tn,charge=toll,user_id=userid)
-        tollch.save()
 
         tcount = request.POST.get("tcount")
         if tcount:
@@ -129,32 +144,52 @@ def startrip(request):
             for x in range(1, inputcount + 1):
                 toll_id = "toll_charge_" + str(x)
                 tcharge = request.POST.get(toll_id)
-                tolldata = tollcharge(charge=tcharge,tripno=tn,user_id=userid)
+                tolldata = tollcharge(toll=tcharge,tripno=tn,user_id=userid)
                 tolldata.save()
-        
+                return redirect("tripage")
+            
         pcount = request.POST.get("pcount")
+        print(pcount)
         if pcount:
             inputcount = int(pcount)
             for x in range(1, inputcount + 1):
                 parking_id = "parking_charge_" + str(x)
-                parking_charge = request.POST.get(parking_id)
-                parkdata = parkingcharges(charge=parking_charge,tripno=tn,user_id=userid)
+                print(parking_id)
+                parking = request.POST[parking_id]
+                parkdata = parkingcharges(park=parking,tripno=tn,user_id=userid)
                 parkdata.save()
-
-        gcount = request.POST.get("count")
-        if gcount == "":
-            gcount = 0
-        if gcount > 0:
-            inputcount = int(gcount)
+        
+        ocount = request.POST.get("ocount")
+        print(ocount)
+        if ocount:
+            inputcount = int(ocount)
+            for x in range(1, inputcount + 1):
+                other_id = "other_charge_" + str(x)
+                print(other_id)
+                other_charge = request.POST.get(other_id)
+                print(other_charge)
+                otherdata = othercharges(ocharge=other_charge,tripno=tn,user_id=userid)
+                otherdata.save()
+        
+        charge = request.POST.get("count")
+        print(charge)
+        if charge != "":
+            inputcount = int(charge)
             for x in range(1, inputcount + 1):
                 guide_id = "guide_charge_" + str(x)
                 place_id = "addplace_" + str(x)
                 gcharge = request.POST.get(guide_id)
                 gplace = request.POST.get(place_id)
-                if gcharge and gplace:
-                    guidedata = guidemod(charge=gcharge, placw=gplace, tripno=tn)
+                if gcharge:
+                    guidedata = guidemod(guidecharge=gcharge, place=gplace, tripno=tn , user_id =userid)
                     guidedata.save()
-
+    
+        data=tripdata(tripnumber=tn,drivername=dn,guestname=gn,startkm=sk,start=sp,fromdate=fd,todate=ed,
+                      endkm=ek,end=ep,vehiclename=vname,vehiclenumber=vnumber,tripcharge=tripcharge,guidecharge=totalguide,
+                      parking=totalpark,toll=totaltoll,tripkm=tripkm,total=total,advance=advance,balance=balance,huncharge=hun,extra=after,
+                      user_id=userid, other=totalother)
+        data.save()
+        
         user=request.session['uid']
         tripn=trip.objects.get(user_id=user)
         tripnum=tripn.tripnumber
@@ -164,14 +199,15 @@ def startrip(request):
         tripn.tripnumber=new_trip_number
         tripn.save()
         return redirect("tripage")
-        
+     
 def bill(request,id):
+    userid= request.session['uid']
     tripd=tripdata.objects.get(id=id)
     tripno = tripd.tripnumber
-    guide=guidemod.objects.filter(tripno=tripno)
-    other =othercharges.objects.filter(tripno=tripno)
-    parking =parkingcharges.objects.filter(tripno=tripno)
-    toll= parkingcharges.objects.filter(tripno=tripno)
+    guide=guidemod.objects.filter(tripno=tripno, user_id=userid)
+    other =othercharges.objects.filter(tripno=tripno, user_id=userid)
+    parking =parkingcharges.objects.filter(tripno=tripno, user_id=userid)
+    toll= parkingcharges.objects.filter(tripno=tripno, user_id=userid)
     charge = int(tripd.guidecharge)
     context = {'trip':tripd,'guide':guide ,'charge':charge,'other':other}
     return render(request,'bill.html',context)
@@ -184,10 +220,10 @@ def edit(request,id):
     userid= request.session['uid']
     tn = tripd.tripnumber
     tolld = tollcharge.objects.filter(user_id=userid ,tripno =tn)
-    guide=guidemod.objects.filter(tripno=tn)
-    other =othercharges.objects.filter(tripno=tn)
-    parking =parkingcharges.objects.filter(tripno=tn)
-    toll= tollcharge.objects.filter(tripno=tn)
+    guide=guidemod.objects.filter(tripno=tn, user_id =userid)
+    other =othercharges.objects.filter(tripno=tn, user_id =userid)
+    parking =parkingcharges.objects.filter(tripno=tn, user_id =userid)
+    toll= tollcharge.objects.filter(tripno=tn, user_id =userid)
     context = {'trip':tripd,'toll':tolld,'tolld':toll,'parking':parking,'other':other,'guide':guide}
     return render(request,'edit.html',context)
 
@@ -208,39 +244,47 @@ def apply(request,id):
         tripd.endkm  = request.POST["ending_km"]
         tripd.huncharge = request.POST["hun"]
         tripd.extra = request.POST["after"]
-        parking = request.POST.get("parking_charge")
-       
+        parkingc = request.POST.get("parking_charge")
+        totalpark = request.POST["totalpark"]
+        tripd.parking = totalpark
+        totaltoll = request.POST.get("totaltoll")
+        tripd.toll = totaltoll
+        totalguide = request.POST.get("totalguide")
+        tripd.guidecharge = totalguide
+        totalother = request.POST.get("totalother")
+        tripd.other = totalother
         tripd.vehiclenumber = request.POST["vnumber"]
-        if parking: 
+        parkingc = request.POST.get("parking_charge")
+        if parkingc: 
                 tripno = tripd.tripnumber
                 userid= request.session['uid']
-                print(parking)
-                parkli = parkingcharges(tripno = tripno,user_id=userid,park=str(parking))
-                parkli.save()
-        else:
-            tripd.parking = 0
+                print(parkingc)
+                pchange = parkingcharges(tripno = tripno,user_id = userid,park = parkingc)
+                pchange.save()
+        
 
         toll = request.POST.get("toll_charge")
         if toll:
-            # extratoll = int(request.POST["totaltoll"])
-            # tripd.toll = int(toll) + extratoll
             tripno = tripd.tripnumber
             userid= request.session['uid']
             tolld = tollcharge(toll=toll,tripno =tripno,user_id=userid)
             tolld.save()
-        else:
-            tripd.toll = 0
 
-        other = request.POST["other"]
+        guide = request.POST["guide_charge"]
+        guide_place = request.POST["guide_place"]
+        if guide:
+            tripno = tripd.tripnumber
+            userid= request.session['uid']
+            guided = guidemod(guidecharge=guide,tripno =tripno,user_id=userid,place=guide_place)
+            guided.save()
+
+        other = request.POST.get("other")
+        print(other)
         if other:
-            # extraother = int(request.POST["totalother"])
-            # tripd.other = int(other) + extraother
             tripno = tripd.tripnumber
             userid= request.session['uid']
             otherd = othercharges(ocharge=other,tripno =tripno,user_id=userid)
             otherd.save()
-        else:
-            tripd.other = 0
 
         tripd.tripkm=request.POST["tripkm"]
         tripd.total=request.POST["total"]
@@ -255,29 +299,9 @@ def apply(request,id):
         else:
             tripd.balance=0
         tripd.tripcharge=request.POST["kilo"]
-
-        guide = request.POST["guide_charge"]
-        guide_place = request.POST["guide_place"]
-        if guide:
-        #   extraguide = int(request.POST["totalguide"])
-        #   tripd.guidecharge = int(guide) + extraguide
-            tripno = tripd.tripnumber
-            userid= request.session['uid']
-            print(guide)
-            print(guide_place)
-            guided = guidemod(guidecharge=guide,tripno =tripno,user_id=userid,place=guide_place)
-            guided.save()
-        else:
-            tripd.guidecharge = 0
-
-        othercharge = request.POST["other"]
-        if othercharge:
-            extraother = int(request.POST["totalother"])
-            tripd.other = int(othercharge) + extraother
-        else:
-            tripd.other = 0
-            print("no")
-
+       
+        tripd.save()
+       
         userid= request.session['uid']
         tcount = request.POST.get("tcount")
         print(tcount)
@@ -298,10 +322,10 @@ def apply(request,id):
             for x in range(1, inputcount + 1):
                 parking_id = "parking_charge_" + str(x)
                 print(parking_id)
-                parking_charge = request.POST.get(parking_id)
-                print(parking_charge)
+                parking = request.POST[parking_id]
+                
                 tn = tripd.tripnumber
-                parkdata = parkingcharges(park=parking_charge,tripno=tn,user_id=userid)
+                parkdata = parkingcharges(park=parking,tripno=tn,user_id=userid)
                 parkdata.save()
         
         ocount = request.POST.get("ocount")
@@ -335,71 +359,99 @@ def apply(request,id):
                     guidedata = guidemod(guidecharge=gcharge, place=gplace, tripno=tn , user_id =userid)
                     guidedata.save()
 
-       
+        userid= request.session['uid']
         tripno = tripd.tripnumber
-        tolld = tollcharge.objects.filter(tripno = tripno)
-        parkd = parkingcharges.objects.filter(tripno = tripno)
-        guidedata = guidemod.objects.filter(tripno=tripno)
-        otherdata = othercharges.objects.filter(tripno = tripno)
+        tolld = tollcharge.objects.filter(tripno = tripno , user_id=userid)
+        parkd = parkingcharges.objects.filter(tripno = tripno,user_id=userid)
+        guidedata = guidemod.objects.filter(tripno=tripno , user_id=userid)
+        otherdata = othercharges.objects.filter(tripno = tripno , user_id=userid)
         id_list = []
         park_list = []
         guide_list =[]
         other_list =[]
 
-        for toll in tolld:
-          id_list.append(toll.id)
-        for x in id_list:
-          echarge = request.POST.get("toll_"+str(x))
-          gett = tolld.get(id=x)
-          gett.toll = echarge
-          gett.save()
 
-        for park in parkd:
-            park_list.append(park.id)
-        for x in park_list:
-            pcharge = request.POST.get("parking_charge_"+str(x))
-            getp = parkd.get(id=x)
-            getp.park = pcharge
-            getp.save()
+        if tolld:
+            for toll in tolld:
+             id_list.append(toll.id)
+            for x in id_list:
+                echarge = request.POST.get("toll_"+str(x))
+                print(echarge)
+                if echarge:
+                    gett = tolld.get(id=x)
+                    gett.toll = echarge
+                    gett.save()
+
+            for park in parkd:
+                park_list.append(park.id)
+            for x in park_list:
+                pcharge = request.POST.get("parking_charge_"+str(x))
+                print(pcharge)
+                if pcharge:
+                    getp = parkd.get(id=x)
+                    getp.park = pcharge
+                    getp.save()
 
         for guide in guidedata:
             guide_list.append(guide.id)
         for x in guide_list:
+            guidedata = guidemod.objects.filter(tripno=tripno)
             gcharge = request.POST.get("guide_"+str(x))
             gplace = request.POST.get("place_"+str(x))
-            getg = guidedata.get(id=x)
-            getg.guidecharge = gcharge
-            getg.place = gplace
-            getg.save()
+            if gcharge:
+                getg = guidedata.get(id=x)
+                getg.guidecharge = gcharge
+                getg.place = gplace
+                getg.save()
 
         for other in otherdata:
             other_list.append(other.id)
         for x in other_list:
             ocharge = request.POST.get("other_"+str(x))
-            geto = otherdata.get(id=x)
-            geto.ocharge = ocharge
-            geto.save()
-        
-        tripno = tripd.tripnumber
-        tolld = tollcharge.objects.filter(tripno = tripno, user_id =userid)
-        parkd = parkingcharges.objects.filter(tripno = tripno, user_id =userid)
-        ttotal = 0
-        ptotal = 0
-
-        # for p in tolld:
-        #     tcharge = int(p.toll)
-        #     ttotal+=tcharge
-        # tripd.toll = ttotal
-        # tripd.save()
-        
-        # for p in parkd:
-        #     pcharge = int(p.park)
-        #     ptotal+=pcharge
-        # tripd.parking = ptotal
-        # tripd.save()
-
+            if ocharge:
+                geto = otherdata.get(id=x)
+                geto.ocharge = ocharge
+                geto.save()
         
         return redirect("tripage")
+
+    
+def delete(request,id):
+    userid= request.session['uid']
+    gbutton = guidemod.objects.get(id=id)
+    tripno = gbutton.tripno
+    tripd = tripdata.objects.get(tripnumber=tripno, user_id =userid)
+    tid = tripd.id
+    gbutton.delete()
+    gbutton.save()
+    return redirect('edit',tid)
+
+def pdelete(request,id):
+    userid= request.session['uid']
+    pbutton = parkingcharges.objects.get(id=id)
+    tripno = pbutton.tripno
+    tripd = tripdata.objects.get(tripnumber=tripno, user_id =userid)
+    pid = tripd.id
+    pbutton.delete()
+    return redirect('edit',pid)
+
+def tdelete(request,id):
+    userid= request.session['uid']
+    tbutton = tollcharge.objects.get(id=id)
+    tripno = tbutton.tripno
+    tripd = tripdata.objects.get(tripnumber=tripno, user_id =userid)
+    tid = tripd.id
+    tbutton.delete()
+    return redirect('edit',tid)
+
+def odelete(request,id):
+    userid= request.session['uid']
+    obutton = othercharges.objects.get(id=id)
+    tripno = obutton.tripno
+    tripd = tripdata.objects.get(tripnumber=tripno, user_id =userid)
+    tid = tripd.id
+    obutton.delete()
+    return redirect('edit',tid)
     
 def remarks(request):
     review = contact.objects.all()
